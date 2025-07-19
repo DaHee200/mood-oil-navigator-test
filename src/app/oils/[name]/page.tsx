@@ -21,7 +21,7 @@ export default async function OilDetailsPage({
 
   return (
     <main className="flex min-h-screen w-full flex-col items-center bg-background py-8 sm:py-12 md:py-16">
-      <div className="container max-w-4xl">
+      <div className="container max-w-5xl">
         <Button asChild variant="ghost" className="mb-4">
           <Link href="/quiz">
             <ChevronLeft className="mr-2 h-4 w-4" />
@@ -31,7 +31,7 @@ export default async function OilDetailsPage({
 
         <Card className="w-full overflow-hidden shadow-xl">
           <div className="grid md:grid-cols-2">
-            <div className="relative h-56 md:h-full w-full p-6">
+            <div className="relative h-64 md:h-full w-full p-6">
               <Image
                 src={oil.image}
                 alt={`${oil.name} 에센셜 오일 병`}
@@ -48,7 +48,7 @@ export default async function OilDetailsPage({
                 </CardTitle>
                 <CardDescription className="text-xl">당신을 위한 맞춤 웰니스 솔루션</CardDescription>
               </CardHeader>
-              <CardContent className="flex flex-grow flex-col justify-between space-y-6 py-6 px-8 pt-0">
+              <CardContent className="flex flex-grow flex-col justify-between space-y-6 py-8 px-8 pt-0">
                 <div>
                   <h3 className="mb-3 flex items-center text-lg font-semibold">
                     <Sparkles className="mr-2 h-5 w-5 text-accent" />
