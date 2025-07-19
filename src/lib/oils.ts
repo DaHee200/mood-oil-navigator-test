@@ -2,7 +2,7 @@ export const oilRecommendations = [
   {
     id: "orange",
     name: "오렌지",
-    keywords: ["기분전환", "행복감", "아침추천"],
+    keywords: ["기분전환", "아침추천"],
     description: "오렌지는 상큼한 향기로 기분을 좋게 만들고, 행복감을 북돋아 줍니다.",
     buyLink: "https://www.doterra.com/KR/ko_KR/p/wild-orange-oil",
     image: "/images/orange.png"
@@ -18,7 +18,7 @@ export const oilRecommendations = [
   {
     id: "peppermint",
     name: "페퍼민트",
-    keywords: ["피로회복", "두통완화", "집중력"],
+    keywords: ["피로회복", "집중력"],
     description: "페퍼민트는 정신을 맑게 해주고, 피곤함을 덜어주는 활력 오일입니다.",
     buyLink: "https://www.doterra.com/KR/ko_KR/p/peppermint-oil",
     image: "/images/peppermint.png"
@@ -26,7 +26,7 @@ export const oilRecommendations = [
   {
     id: "ylang-ylang",
     name: "일랑일랑",
-    keywords: ["우울완화", "감정진정", "밤추천", "행복감"],
+    keywords: ["우울완화", "행복감", "밤추천"],
     description: "일랑일랑은 감정을 부드럽게 어루만지며, 우울한 기분을 완화시켜 줍니다.",
     buyLink: "https://www.doterra.com/KR/ko_KR/p/ylang-ylang-oil",
     image: "/images/ylangylang.png"

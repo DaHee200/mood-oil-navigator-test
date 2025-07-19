@@ -46,7 +46,7 @@ const quizQuestions = [
     question: '원하는 느낌은?',
     icon: Smile,
     options: {
-      yes: { text: '활력', tags: ['기분전환', '행복감'] },
+      yes: { text: '활력', tags: ['기분전환'] },
       no: { text: '안정감', tags: ['감정진정', '마음안정', '차분함'] },
     },
   },
@@ -64,7 +64,7 @@ const quizQuestions = [
     question: '가장 해결하고 싶은 문제는?',
     icon: BrainCircuit,
     options: {
-      yes: { text: '두통/집중력 저하', tags: ['두통완화', '집중력'] },
+      yes: { text: '두통/집중력 저하', tags: ['집중력'] },
       no: { text: '짜증/스트레스', tags: ['짜증완화', '스트레스완화'] },
     },
   },
