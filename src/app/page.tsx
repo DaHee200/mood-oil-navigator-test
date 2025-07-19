@@ -20,9 +20,6 @@ export default function Home() {
           </CardDescription>
         </CardHeader>
         <CardContent className="p-6 pt-0">
-          <p className="mb-8 text-lg text-muted-foreground">
-            현재 기분에 대한 몇 가지 간단한 질문에 답해주시면, 당신만을 위한 맞춤 오일을 추천해 드립니다.
-          </p>
           <Button asChild size="lg" className="w-full py-7 text-xl font-bold">
             <Link href="/quiz">시작하기</Link>
           </Button>
