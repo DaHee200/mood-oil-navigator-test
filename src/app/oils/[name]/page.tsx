@@ -64,11 +64,11 @@ export default async function OilDetailsPage({
                     <Droplet className="mr-2 h-5 w-5 text-accent" />
                     활용법
                   </h3>
-                  <ul className="list-disc space-y-2 px-2 text-muted-foreground">
-                    <li className="whitespace-nowrap">디퓨저에 몇 방울 떨어뜨려 공간을 향기롭게 만드세요.</li>
-                    <li className="whitespace-nowrap">캐리어 오일과 섞어 편안한 마사지를 즐기세요.</li>
-                    <li className="whitespace-nowrap">따뜻한 목욕물에 넣어 근육과 마음을 진정시키세요.</li>
-                    <li className="whitespace-nowrap">병에서 코로 향기를 맡아 즉각적인 기분 전환을 경험하세요.</li>
+                  <ul className="list-disc space-y-2 pl-5 text-muted-foreground">
+                    <li>디퓨저에 몇 방울 떨어뜨려 공간을 향기롭게 만드세요.</li>
+                    <li>캐리어 오일과 섞어 편안한 마사지를 즐기세요.</li>
+                    <li>따뜻한 목욕물에 넣어 근육과 마음을 진정시키세요.</li>
+                    <li>병에서 코로 향기를 맡아 즉각적인 기분 전환을 경험하세요.</li>
                   </ul>
                 </div>
                 
