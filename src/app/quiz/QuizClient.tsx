@@ -149,24 +149,25 @@ const QuizClient: FC = () => {
 
   if (recommendation) {
     return (
-      <Card className="w-full max-w-xl animate-fade-in text-center shadow-lg">
+      <Card className="w-full max-w-md animate-fade-in text-center shadow-lg">
         <CardHeader>
-          <CardTitle className="font-headline text-4xl">추천 오일</CardTitle>
-          <CardDescription className="text-lg">답변을 바탕으로 다음 오일을 추천합니다:</CardDescription>
+          <CardTitle className="font-headline text-3xl">추천 오일</CardTitle>
+          <CardDescription className="text-base">답변을 바탕으로 다음 오일을 추천합니다:</CardDescription>
         </CardHeader>
-        <CardContent className="flex flex-col items-center space-y-6">
-          <Image
-            src={recommendation.image}
-            alt={`${recommendation.name} oil`}
-            width={400}
-            height={400}
-            className="rounded-lg object-cover"
-            data-ai-hint="essential oil bottle"
-          />
-          <h3 className="font-headline text-5xl text-primary">{recommendation.name}</h3>
-          <p className="text-xl text-muted-foreground">{recommendation.description}</p>
+        <CardContent className="flex flex-col items-center space-y-4 px-4">
+          <div className="relative h-48 w-48">
+            <Image
+              src={recommendation.image}
+              alt={`${recommendation.name} oil`}
+              fill
+              className="rounded-lg object-cover"
+              data-ai-hint="essential oil bottle"
+            />
+          </div>
+          <h3 className="font-headline text-4xl text-primary">{recommendation.name}</h3>
+          <p className="text-base text-muted-foreground">{recommendation.description}</p>
         </CardContent>
-        <CardFooter className="grid grid-cols-1 gap-4 p-6 sm:grid-cols-2">
+        <CardFooter className="grid grid-cols-1 gap-2 p-4 sm:grid-cols-2">
            <Button
             size="lg"
             variant="outline"
@@ -176,11 +177,11 @@ const QuizClient: FC = () => {
               )
             }
           >
-            <Sparkles className="mr-2 h-5 w-5" /> 상세 정보 보기
+            <Sparkles className="mr-2 h-4 w-4" /> 상세 정보
           </Button>
           <Button asChild size="lg">
             <a href={recommendation.purchaseLink} target="_blank" rel="noopener noreferrer">
-              <ShoppingBag className="mr-2 h-5 w-5" /> 지금 구매하기
+              <ShoppingBag className="mr-2 h-4 w-4" /> 구매하기
             </a>
           </Button>
         </CardFooter>
