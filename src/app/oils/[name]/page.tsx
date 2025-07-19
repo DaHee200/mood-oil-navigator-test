@@ -73,7 +73,7 @@ export default async function OilDetailsPage({
                 </div>
                 
                 <Button asChild size="lg" className="w-full text-base font-bold">
-                  <a href={oil.purchaseLink} target="_blank" rel="noopener noreferrer">
+                  <a href={oil.buyLink} target="_blank" rel="noopener noreferrer">
                     <ShoppingBag className="mr-2 h-5 w-5" /> 지금 구매하기
                   </a>
                 </Button>

@@ -35,8 +35,8 @@ const quizQuestions = [
     question: '지금 기분은 어떤가요?',
     icon: HeartPulse,
     options: {
-      yes: { text: '지치고 피곤함', tags: ['피로회복', '활력', '에너지'] },
-      no: { text: '불안하고 긴장됨', tags: ['불안완화', '스트레스완화', '이완'] },
+      yes: { text: '지치고 피곤함', tags: ['피로회복', '기분전환'] },
+      no: { text: '불안하고 긴장됨', tags: ['불안완화', '스트레스완화'] },
     },
   },
   {
@@ -44,8 +44,8 @@ const quizQuestions = [
     question: '원하는 느낌은?',
     icon: Smile,
     options: {
-      yes: { text: '활력', tags: ['기분전환', '활력', '상쾌함', '에너지'] },
-      no: { text: '안정감', tags: ['감정진정', '마음안정', '이완', '숙면'] },
+      yes: { text: '활력', tags: ['기분전환', '피로회복'] },
+      no: { text: '안정감', tags: ['감정진정', '마음안정'] },
     },
   },
   {
@@ -53,8 +53,8 @@ const quizQuestions = [
     question: '평소 성향은?',
     icon: Users,
     options: {
-      yes: { text: '외향적', tags: ['기분전환', '행복감', '활력', '상쾌함'] },
-      no: { text: '내향적', tags: ['마음안정', '감정진정', '명상', '부드러움'] },
+      yes: { text: '외향적', tags: ['기분전환', '행복감'] },
+      no: { text: '내향적', tags: ['마음안정', '감정진정'] },
     },
   },
   {
@@ -63,7 +63,7 @@ const quizQuestions = [
     icon: TreePine,
     options: {
       yes: { text: '상큼한 과일향', tags: ['상쾌함', '기분전환', '행복감'] },
-      no: { text: '부드러운 꽃향', tags: ['감정진정', '우울완화', '부드러움'] },
+      no: { text: '부드러운 꽃향', tags: ['감정진정', '우울완화'] },
     },
   },
   {
@@ -71,8 +71,8 @@ const quizQuestions = [
     question: '오일을 사용할 시간대는?',
     icon: Clock,
     options: {
-      yes: { text: '아침', tags: ['아침추천', '상쾌함', '활력', '기분전환'] },
-      no: { text: '밤', tags: ['밤추천', '숙면', '이완', '감정진정'] },
+      yes: { text: '아침', tags: ['아침추천', '상쾌함', '기분전환'] },
+      no: { text: '밤', tags: ['밤추천', '감정진정'] },
     },
   },
 ];
@@ -184,7 +184,7 @@ const QuizClient: FC = () => {
             <Sparkles className="mr-2 h-4 w-4" /> 상세 정보
           </Button>
           <Button asChild size="lg">
-            <a href={recommendation.purchaseLink} target="_blank" rel="noopener noreferrer">
+            <a href={recommendation.buyLink} target="_blank" rel="noopener noreferrer">
               <ShoppingBag className="mr-2 h-4 w-4" /> 구매하기
             </a>
           </Button>
