@@ -12,6 +12,7 @@ import {
   ChevronLeft,
   Sparkles,
   ShoppingBag,
+  TreePine,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -59,10 +60,10 @@ const quizQuestions = [
   {
     id: 'scent',
     question: '원하는 향 계열은?',
-    icon: Grape,
+    icon: TreePine,
     options: {
-      yes: { text: '상큼한 과일향', tag: '과일' },
-      no: { text: '부드러운 꽃향', tag: '꽃' },
+      yes: { text: '상큼한 과일 또는 부드러운 꽃', tag: '과일' }, // This now covers both
+      no: { text: '깊은 나무 또는 흙', tag: '나무' },
     },
   },
   {
@@ -89,15 +90,18 @@ const QuizClient: FC = () => {
   const progressValue = ((step + 1) / quizQuestions.length) * 100;
 
   const handleAnswer = (tag: string) => {
-    const nextAnswers = { ...answers, [currentQuestion.id]: tag };
+    // Special handling for the combined scent question
+    const answerTag = currentQuestion.id === 'scent' && tag === '과일' ? ['과일', '꽃'] : [tag];
+    const nextAnswers = { ...answers, [currentQuestion.id]: answerTag };
     setAnswers(nextAnswers);
+
     if (step < quizQuestions.length - 1) {
       changeStep(step + 1);
     } else {
       handleSubmit(nextAnswers);
     }
   };
-
+  
   const changeStep = (nextStep: number) => {
     setIsFading(true);
     setTimeout(() => {
@@ -112,7 +116,7 @@ const QuizClient: FC = () => {
     }
   };
 
-  const handleSubmit = async (finalAnswers: { [key: string]: string }) => {
+  const handleSubmit = async (finalAnswers: { [key: string]: string | string[] }) => {
     setIsLoading(true);
     const result = await getOilRecommendation(finalAnswers);
 
@@ -155,9 +159,9 @@ const QuizClient: FC = () => {
             src={recommendation.image}
             alt={`${recommendation.name} oil`}
             width={400}
-            height={300}
+            height={400}
             className="rounded-lg object-cover"
-            data-ai-hint="essential oil"
+            data-ai-hint="essential oil bottle"
           />
           <h3 className="font-headline text-5xl text-primary">{recommendation.name}</h3>
           <p className="text-xl text-muted-foreground">{recommendation.description}</p>
@@ -199,10 +203,10 @@ const QuizClient: FC = () => {
             <currentQuestion.icon className="h-16 w-16 text-primary" />
             <p className="text-2xl font-medium">{currentQuestion.question}</p>
             <div className="flex w-full justify-center gap-6 pt-6">
-              <Button onClick={() => handleAnswer(currentQuestion.options.yes.tag)} size="lg" className="w-40 py-6 text-lg">
+              <Button onClick={() => handleAnswer(currentQuestion.options.yes.tag)} size="lg" className="w-auto px-6 py-6 text-lg">
                 {currentQuestion.options.yes.text}
               </Button>
-              <Button onClick={() => handleAnswer(currentQuestion.options.no.tag)} size="lg" variant="outline" className="w-40 py-6 text-lg">
+              <Button onClick={() => handleAnswer(currentQuestion.options.no.tag)} size="lg" variant="outline" className="w-auto px-6 py-6 text-lg">
                 {currentQuestion.options.no.text}
               </Button>
             </div>

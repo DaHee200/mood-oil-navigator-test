@@ -38,6 +38,14 @@ export const oilRecommendations = [
     description: "베르가못은 상큼한 향으로 기분을 밝게 하고 스트레스 해소에 도움을 줍니다.",
     purchaseLink: "https://yourstore.com/bergamot",
     image: "/images/bergamot.jpg",
+  },
+  {
+    id: "frankincense",
+    name: "프랑킨센스",
+    keywords: ["불안", "안정", "나무", "밤"],
+    description: "프랑킨센스는 마음을 차분하게 하고 정신을 고양시켜 명상에 도움을 줍니다.",
+    purchaseLink: "https://yourstore.com/frankincense",
+    image: "/images/frankincense.jpg",
   }
 ];
 
