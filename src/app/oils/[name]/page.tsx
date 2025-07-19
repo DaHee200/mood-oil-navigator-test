@@ -48,7 +48,7 @@ export default async function OilDetailsPage({
                 </CardTitle>
                 <CardDescription className="text-xl">당신을 위한 맞춤 웰니스 솔루션</CardDescription>
               </CardHeader>
-              <CardContent className="flex flex-grow flex-col justify-between space-y-6 p-6 pt-0">
+              <CardContent className="flex flex-grow flex-col justify-between space-y-6 py-6 px-8 pt-0">
                 <div>
                   <h3 className="mb-3 flex items-center text-lg font-semibold">
                     <Sparkles className="mr-2 h-5 w-5 text-accent" />
@@ -64,7 +64,7 @@ export default async function OilDetailsPage({
                     <Droplet className="mr-2 h-5 w-5 text-accent" />
                     활용법
                   </h3>
-                  <ul className="list-disc space-y-2 pl-5 text-muted-foreground">
+                  <ul className="list-disc space-y-2 pl-5">
                     <li className="whitespace-nowrap">디퓨저에 몇 방울 떨어뜨려 공간을 향기롭게 만드세요.</li>
                     <li className="whitespace-nowrap">캐리어 오일과 섞어 편안한 마사지를 즐기세요.</li>
                     <li className="whitespace-nowrap">따뜻한 목욕물에 넣어 근육과 마음을 진정시키세요.</li>
