@@ -16,7 +16,7 @@ export default function Home() {
             Find your Oils
           </CardTitle>
           <CardDescription className="pt-2 text-xl">
-            I'll recommend oils that match your mood today!
+            당신의 오늘 분위기에 맞는 오일을 추천해드려요!
           </CardDescription>
         </CardHeader>
         <CardContent className="p-6 pt-0">
@@ -24,7 +24,7 @@ export default function Home() {
             현재 기분에 대한 몇 가지 간단한 질문에 답해주시면, 당신만을 위한 맞춤 오일을 추천해 드립니다.
           </p>
           <Button asChild size="lg" className="w-full py-7 text-xl font-bold">
-            <Link href="/quiz">Start</Link>
+            <Link href="/quiz">시작하기</Link>
           </Button>
         </CardContent>
       </Card>
