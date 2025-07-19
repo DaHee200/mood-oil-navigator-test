@@ -165,7 +165,10 @@ const QuizClient: FC = () => {
               data-ai-hint="essential oil bottle"
             />
           </div>
-          <h3 className="font-headline text-3xl text-primary">{recommendation.name}</h3>
+          <div>
+            <h3 className="font-headline text-3xl font-bold text-primary">{recommendation.name}</h3>
+            <p className="text-lg text-muted-foreground capitalize">({recommendation.id.replace('-', ' ')})</p>
+          </div>
           <p className="text-base text-muted-foreground">{recommendation.description}</p>
         </CardContent>
         <CardFooter className="grid grid-cols-1 gap-2 p-4 sm:grid-cols-2">
