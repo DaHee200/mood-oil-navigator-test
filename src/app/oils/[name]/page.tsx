@@ -68,7 +68,7 @@ export default async function OilDetailsPage({
                     <li className="whitespace-nowrap">디퓨저에 몇 방울 떨어뜨려 공간을 향기롭게 만드세요.</li>
                     <li className="whitespace-nowrap">캐리어 오일과 섞어 편안한 마사지를 즐기세요.</li>
                     <li className="whitespace-nowrap">따뜻한 목욕물에 넣어 근육과 마음을 진정시키세요.</li>
-                    <li className="whitespace-nowrap">병에서 직접 흡입하여 즉각적인 기분 전환을 경험하세요.</li>
+                    <li className="whitespace-nowrap">병에서 코로 향기를 맡아 즉각적인 기분 전환을 경험하세요.</li>
                   </ul>
                 </div>
                 
