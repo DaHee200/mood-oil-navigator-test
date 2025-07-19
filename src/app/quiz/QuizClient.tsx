@@ -13,6 +13,8 @@ import {
   Sparkles,
   ShoppingBag,
   TreePine,
+  BrainCircuit,
+  Wind,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -44,35 +46,35 @@ const quizQuestions = [
     question: '원하는 느낌은?',
     icon: Smile,
     options: {
-      yes: { text: '활력', tags: ['기분전환', '피로회복'] },
-      no: { text: '안정감', tags: ['감정진정', '마음안정'] },
-    },
-  },
-  {
-    id: 'personality',
-    question: '평소 성향은?',
-    icon: Users,
-    options: {
-      yes: { text: '외향적', tags: ['기분전환', '행복감'] },
-      no: { text: '내향적', tags: ['마음안정', '감정진정'] },
+      yes: { text: '활력', tags: ['기분전환', '행복감'] },
+      no: { text: '안정감', tags: ['감정진정', '마음안정', '차분함'] },
     },
   },
   {
     id: 'scent',
-    question: '원하는 향 계열은?',
-    icon: TreePine,
+    question: '선호하는 향 계열은?',
+    icon: Wind,
     options: {
-      yes: { text: '상큼한 과일향', tags: ['상쾌함', '기분전환', '행복감'] },
-      no: { text: '부드러운 꽃향', tags: ['감정진정', '우울완화'] },
+      yes: { text: '상큼한 과일향', tags: ['상쾌함', '행복감'] },
+      no: { text: '깊고 차분한 나무/꽃향', tags: ['우울완화', '명상'] },
+    },
+  },
+  {
+    id: 'problem',
+    question: '가장 해결하고 싶은 문제는?',
+    icon: BrainCircuit,
+    options: {
+      yes: { text: '두통/집중력 저하', tags: ['두통완화', '상쾌함'] },
+      no: { text: '짜증/스트레스', tags: ['짜증완화', '스트레스완화'] },
     },
   },
   {
     id: 'time',
-    question: '오일을 사용할 시간대는?',
+    question: '주로 사용할 시간대는?',
     icon: Clock,
     options: {
-      yes: { text: '아침', tags: ['아침추천', '상쾌함', '기분전환'] },
-      no: { text: '밤', tags: ['밤추천', '감정진정'] },
+      yes: { text: '아침/낮', tags: ['아침추천'] },
+      no: { text: '저녁/밤', tags: ['밤추천'] },
     },
   },
 ];
