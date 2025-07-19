@@ -37,7 +37,7 @@ const quizQuestions = [
     question: '지금 기분은 어떤가요?',
     icon: HeartPulse,
     options: {
-      yes: { text: '지치고 피곤함', tags: ['피로회복', '기분전환'] },
+      yes: { text: '지치고 피곤함', tags: ['피로회복'] },
       no: { text: '불안하고 긴장됨', tags: ['불안완화', '스트레스완화'] },
     },
   },
@@ -64,7 +64,7 @@ const quizQuestions = [
     question: '가장 해결하고 싶은 문제는?',
     icon: BrainCircuit,
     options: {
-      yes: { text: '두통/집중력 저하', tags: ['두통완화', '상쾌함'] },
+      yes: { text: '두통/집중력 저하', tags: ['두통완화', '집중력'] },
       no: { text: '짜증/스트레스', tags: ['짜증완화', '스트레스완화'] },
     },
   },
