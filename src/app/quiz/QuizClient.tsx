@@ -35,8 +35,8 @@ const quizQuestions = [
     question: '지금 기분은 어떤가요?',
     icon: HeartPulse,
     options: {
-      yes: { text: '지치고 피곤함', tag: '피로' },
-      no: { text: '불안하고 긴장됨', tag: '불안' },
+      yes: { text: '지치고 피곤함', tags: ['피로회복', '활력', '에너지'] },
+      no: { text: '불안하고 긴장됨', tags: ['불안완화', '스트레스완화', '이완'] },
     },
   },
   {
@@ -44,8 +44,8 @@ const quizQuestions = [
     question: '원하는 느낌은?',
     icon: Smile,
     options: {
-      yes: { text: '활력', tag: '활력' },
-      no: { text: '안정감', tag: '안정' },
+      yes: { text: '활력', tags: ['기분전환', '활력', '상쾌함', '에너지'] },
+      no: { text: '안정감', tags: ['감정진정', '마음안정', '이완', '숙면'] },
     },
   },
   {
@@ -53,8 +53,8 @@ const quizQuestions = [
     question: '평소 성향은?',
     icon: Users,
     options: {
-      yes: { text: '외향적', tag: '활력' },
-      no: { text: '내향적', tag: '안정' },
+      yes: { text: '외향적', tags: ['기분전환', '행복감', '활력', '상쾌함'] },
+      no: { text: '내향적', tags: ['마음안정', '감정진정', '명상', '부드러움'] },
     },
   },
   {
@@ -62,8 +62,8 @@ const quizQuestions = [
     question: '원하는 향 계열은?',
     icon: TreePine,
     options: {
-      yes: { text: '상큼한 과일 또는 부드러운 꽃', tag: '과일' }, // This now covers both
-      no: { text: '깊은 나무 또는 흙', tag: '나무' },
+      yes: { text: '상큼한 과일향', tags: ['상쾌함', '기분전환', '행복감'] },
+      no: { text: '부드러운 꽃향', tags: ['감정진정', '우울완화', '부드러움'] },
     },
   },
   {
@@ -71,8 +71,8 @@ const quizQuestions = [
     question: '오일을 사용할 시간대는?',
     icon: Clock,
     options: {
-      yes: { text: '아침', tag: '아침' },
-      no: { text: '밤', tag: '밤' },
+      yes: { text: '아침', tags: ['아침추천', '상쾌함', '활력', '기분전환'] },
+      no: { text: '밤', tags: ['밤추천', '숙면', '이완', '감정진정'] },
     },
   },
 ];
@@ -81,7 +81,7 @@ const QuizClient: FC = () => {
   const router = useRouter();
   const { toast } = useToast();
   const [step, setStep] = useState(0);
-  const [answers, setAnswers] = useState<{ [key: string]: string }>({});
+  const [answers, setAnswers] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [recommendation, setRecommendation] = useState<Oil | null>(null);
   const [isFading, setIsFading] = useState(false);
@@ -89,10 +89,8 @@ const QuizClient: FC = () => {
   const currentQuestion = quizQuestions[step];
   const progressValue = ((step + 1) / quizQuestions.length) * 100;
 
-  const handleAnswer = (tag: string) => {
-    // Special handling for the combined scent question
-    const answerTag = currentQuestion.id === 'scent' && tag === '과일' ? ['과일', '꽃'] : [tag];
-    const nextAnswers = { ...answers, [currentQuestion.id]: answerTag };
+  const handleAnswer = (tags: string[]) => {
+    const nextAnswers = [...answers, ...tags];
     setAnswers(nextAnswers);
 
     if (step < quizQuestions.length - 1) {
@@ -112,11 +110,13 @@ const QuizClient: FC = () => {
 
   const handleBack = () => {
     if (step > 0) {
+      // For simplicity, we just go back a step. A more complex implementation
+      // might remove the last set of tags from `answers`.
       changeStep(step - 1);
     }
   };
 
-  const handleSubmit = async (finalAnswers: { [key: string]: string | string[] }) => {
+  const handleSubmit = async (finalAnswers: string[]) => {
     setIsLoading(true);
     const result = await getOilRecommendation(finalAnswers);
 
@@ -203,10 +203,10 @@ const QuizClient: FC = () => {
             <currentQuestion.icon className="h-16 w-16 text-primary" />
             <p className="text-2xl font-medium">{currentQuestion.question}</p>
             <div className="flex w-full justify-center gap-6 pt-6">
-              <Button onClick={() => handleAnswer(currentQuestion.options.yes.tag)} size="lg" className="w-auto px-6 py-6 text-lg">
+              <Button onClick={() => handleAnswer(currentQuestion.options.yes.tags)} size="lg" className="w-auto px-6 py-6 text-lg">
                 {currentQuestion.options.yes.text}
               </Button>
-              <Button onClick={() => handleAnswer(currentQuestion.options.no.tag)} size="lg" variant="outline" className="w-auto px-6 py-6 text-lg">
+              <Button onClick={() => handleAnswer(currentQuestion.options.no.tags)} size="lg" variant="outline" className="w-auto px-6 py-6 text-lg">
                 {currentQuestion.options.no.text}
               </Button>
             </div>

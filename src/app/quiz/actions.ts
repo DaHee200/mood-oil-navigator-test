@@ -8,11 +8,8 @@ interface ActionResult {
   error?: string;
 }
 
-export async function getOilRecommendation(answers: { [key: string]: string | string[] }): Promise<ActionResult> {
+export async function getOilRecommendation(userKeywords: string[]): Promise<ActionResult> {
   try {
-    // Flatten all tags from answers into a single array
-    const userKeywords = Object.values(answers).flat();
-
     let bestMatch: Oil | null = null;
     let maxScore = -1;
 
