@@ -33,7 +33,7 @@ export default async function OilDetailsPage({
           <div className="grid md:grid-cols-2">
             <div className="relative h-64 md:h-full">
               <Image
-                src={`https://placehold.co/600x600/E8F5E9/333333`}
+                src={`https://placehold.co/600x600.png`}
                 data-ai-hint={`${oil.name} oil nature`}
                 alt={`${oil.name} 에센셜 오일 병`}
                 layout="fill"
