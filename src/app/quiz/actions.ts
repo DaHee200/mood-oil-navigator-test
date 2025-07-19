@@ -8,15 +8,9 @@ interface ActionResult {
   error?: string;
 }
 
-export async function getOilRecommendation(answers: { [key: string]: boolean }): Promise<ActionResult> {
+export async function getOilRecommendation(answers: { [key: string]: string }): Promise<ActionResult> {
   try {
-    const userKeywords: string[] = [];
-    if (answers.happiness) userKeywords.push('happiness');
-    if (answers.stress) userKeywords.push('stress');
-    if (answers.fatigue) userKeywords.push('fatigue');
-    else userKeywords.push('energy');
-    if (answers.anxiety) userKeywords.push('anxiety');
-    if (answers.irritation) userKeywords.push('irritation');
+    const userKeywords = Object.values(answers);
 
     let bestMatch: Oil | null = null;
     let maxScore = -1;
@@ -35,14 +29,14 @@ export async function getOilRecommendation(answers: { [key: string]: boolean }):
     }
 
     if (!bestMatch) {
-        // Fallback to the first oil if no match is found
-        bestMatch = oilRecommendations[0];
+        // Fallback to a default oil if no match is found
+        bestMatch = oilRecommendations.find(o => o.id === 'lavender') || oilRecommendations[0];
     }
     
     return { success: true, data: bestMatch };
 
   } catch (error) {
     console.error('Error getting oil recommendation:', error);
-    return { success: false, error: 'Sorry, we couldn\'t get a recommendation at this time. Please try again later.' };
+    return { success: false, error: '추천을 받는 동안 오류가 발생했습니다. 나중에 다시 시도해주세요.' };
   }
 }

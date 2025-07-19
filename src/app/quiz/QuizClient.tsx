@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, type FC } from 'react';
+import { useState, type FC } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   Smile,
@@ -30,37 +30,57 @@ import Image from 'next/image';
 
 const quizQuestions = [
   {
-    id: 'happiness',
-    question: '지금 행복하다고 느끼시나요?',
+    id: 'mood',
+    question: '지금 어떤 기분을 느끼고 싶으신가요?',
     icon: Smile,
+    options: {
+      yes: { text: '활기참', tag: '활력' },
+      no: { text: '차분함', tag: '안정' },
+    },
   },
   {
     id: 'stress',
     question: '최근 스트레스를 많이 받았나요?',
     icon: Annoyed,
+    options: {
+      yes: { text: '예', tag: '스트레스' },
+      no: { text: '아니오', tag: '평온' },
+    },
   },
   {
-    id: 'fatigue',
-    question: '최근 피로감을 느끼시나요?',
+    id: 'energy',
+    question: '주로 어느 시간대에 오일을 사용하고 싶으신가요?',
     icon: Battery,
+    options: {
+      yes: { text: '아침/낮', tag: '에너지' },
+      no: { text: '저녁/밤', tag: '휴식' },
+    },
   },
   {
     id: 'anxiety',
-    question: '불안감을 느끼고 있나요?',
+    question: '마음의 평온이 필요한 순간이 있나요?',
     icon: Wind,
+    options: {
+      yes: { text: '예', tag: '불안' },
+      no: { text: '아니오', tag: '집중' },
+    },
   },
   {
     id: 'irritation',
     question: '최근 쉽게 짜증이 났나요?',
     icon: Zap,
+    options: {
+      yes: { text: '예', tag: '짜증' },
+      no: { text: '아니오', tag: '행복' },
+    },
   },
 ];
 
-const QuizClient = () => {
+const QuizClient: FC = () => {
   const router = useRouter();
   const { toast } = useToast();
   const [step, setStep] = useState(0);
-  const [answers, setAnswers] = useState<{ [key: string]: boolean }>({});
+  const [answers, setAnswers] = useState<{ [key: string]: string }>({});
   const [isLoading, setIsLoading] = useState(false);
   const [recommendation, setRecommendation] = useState<Oil | null>(null);
   const [isFading, setIsFading] = useState(false);
@@ -68,8 +88,8 @@ const QuizClient = () => {
   const currentQuestion = quizQuestions[step];
   const progressValue = ((step + 1) / quizQuestions.length) * 100;
 
-  const handleAnswer = (value: boolean) => {
-    const nextAnswers = { ...answers, [currentQuestion.id]: value };
+  const handleAnswer = (tag: string) => {
+    const nextAnswers = { ...answers, [currentQuestion.id]: tag };
     setAnswers(nextAnswers);
     if (step < quizQuestions.length - 1) {
       changeStep(step + 1);
@@ -92,7 +112,7 @@ const QuizClient = () => {
     }
   };
 
-  const handleSubmit = async (finalAnswers: { [key: string]: boolean }) => {
+  const handleSubmit = async (finalAnswers: { [key: string]: string }) => {
     setIsLoading(true);
     const result = await getOilRecommendation(finalAnswers);
 
@@ -133,10 +153,11 @@ const QuizClient = () => {
         <CardContent className="flex flex-col items-center space-y-6">
           <Image
             src={recommendation.image}
-            alt={recommendation.name}
+            alt={`${recommendation.name} oil`}
             width={400}
             height={300}
             className="rounded-lg object-cover"
+            data-ai-hint="essential oil"
           />
           <h3 className="font-headline text-5xl text-primary">{recommendation.name}</h3>
           <p className="text-xl text-muted-foreground">{recommendation.description}</p>
@@ -178,11 +199,11 @@ const QuizClient = () => {
             <currentQuestion.icon className="h-16 w-16 text-primary" />
             <p className="text-2xl font-medium">{currentQuestion.question}</p>
             <div className="flex w-full justify-center gap-6 pt-6">
-              <Button onClick={() => handleAnswer(true)} size="lg" className="w-40 py-6 text-lg">
-                예
+              <Button onClick={() => handleAnswer(currentQuestion.options.yes.tag)} size="lg" className="w-40 py-6 text-lg">
+                {currentQuestion.options.yes.text}
               </Button>
-              <Button onClick={() => handleAnswer(false)} size="lg" variant="outline" className="w-40 py-6 text-lg">
-                아니오
+              <Button onClick={() => handleAnswer(currentQuestion.options.no.tag)} size="lg" variant="outline" className="w-40 py-6 text-lg">
+                {currentQuestion.options.no.text}
               </Button>
             </div>
           </div>
