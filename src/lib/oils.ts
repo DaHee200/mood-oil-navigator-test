@@ -30,6 +30,14 @@ export const oilRecommendations = [
     description: "페퍼민트는 정신을 맑게 해주고 피로를 날려줍니다.",
     purchaseLink: "https://yourstore.com/peppermint",
     image: "/images/peppermint.jpg",
+  },
+  {
+    id: "bergamot",
+    name: "베르가못",
+    keywords: ["피로", "활력", "과일", "아침", "불안"],
+    description: "베르가못은 상큼한 향으로 기분을 밝게 하고 스트레스 해소에 도움을 줍니다.",
+    purchaseLink: "https://yourstore.com/bergamot",
+    image: "/images/bergamot.jpg",
   }
 ];
 
