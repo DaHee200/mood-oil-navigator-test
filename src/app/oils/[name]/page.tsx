@@ -31,14 +31,16 @@ export default async function OilDetailsPage({
 
         <Card className="w-full overflow-hidden shadow-xl">
           <div className="grid md:grid-cols-2">
-            <div className="relative h-64 md:h-full">
-              <Image
-                src={oil.image}
-                alt={`${oil.name} 에센셜 오일 병`}
-                fill
-                objectFit="cover"
-                className="transition-transform duration-500 hover:scale-105"
-              />
+            <div className="p-6">
+              <div className="relative h-64 md:h-full w-full">
+                <Image
+                  src={oil.image}
+                  alt={`${oil.name} 에센셜 오일 병`}
+                  fill
+                  objectFit="cover"
+                  className="rounded-lg transition-transform duration-500 hover:scale-105"
+                />
+              </div>
             </div>
             <div className="flex flex-col">
               <CardHeader className="pb-4">
