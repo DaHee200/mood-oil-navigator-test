@@ -45,7 +45,7 @@ export const oilRecommendations = [
     keywords: ["스트레스완화", "마음안정", "호흡", "명상", "집중"],
     description: "프랑킨센스는 깊은 호흡을 유도하고 마음을 안정시켜주는 묵직한 향입니다.",
     purchaseLink: "https://www.doterra.com/KR/ko_KR/p/frankincense-oil",
-    image: "/images/frankincense.jpg"
+    image: "/images/frankincense.png"
   }
 ];
 
