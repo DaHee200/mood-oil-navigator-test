@@ -35,15 +35,16 @@ export default async function OilDetailsPage({
               <Image
                 src={oil.image}
                 alt={`${oil.name} 에센셜 오일 병`}
-                layout="fill"
+                fill
                 objectFit="cover"
                 className="transition-transform duration-500 hover:scale-105"
               />
             </div>
             <div className="flex flex-col">
               <CardHeader className="pb-4">
-                <CardTitle className="font-headline text-5xl tracking-tight text-primary">
-                  {oil.name}
+                <CardTitle className="font-headline tracking-tight text-primary flex items-baseline gap-2">
+                  <span className="text-4xl">{oil.name}</span>
+                  <span className="text-2xl font-body text-muted-foreground capitalize">({oil.id.replace('-', ' ')})</span>
                 </CardTitle>
                 <CardDescription className="text-xl">당신을 위한 맞춤 웰니스 솔루션</CardDescription>
               </CardHeader>
