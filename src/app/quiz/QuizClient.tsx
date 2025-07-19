@@ -25,7 +25,7 @@ import {
 import { Progress } from '@/components/ui/progress';
 import { getOilRecommendation } from './actions';
 import { useToast } from '@/hooks/use-toast';
-import type { OilRecommendationOutput } from '@/ai/flows/recommend-oil';
+import type { Oil } from '@/lib/oils';
 import Image from 'next/image';
 
 const quizQuestions = [
@@ -62,7 +62,7 @@ const QuizClient = () => {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<{ [key: string]: boolean }>({});
   const [isLoading, setIsLoading] = useState(false);
-  const [recommendation, setRecommendation] = useState<OilRecommendationOutput | null>(null);
+  const [recommendation, setRecommendation] = useState<Oil | null>(null);
   const [isFading, setIsFading] = useState(false);
 
   const currentQuestion = quizQuestions[step];
@@ -108,22 +108,12 @@ const QuizClient = () => {
     setIsLoading(false);
   };
 
-  const answersString = useMemo(() => {
-    return Object.entries(answers)
-      .map(([key, value]) => {
-        const question = quizQuestions.find(q => q.id === key);
-        const label = question ? question.question : key;
-        return `질문 "${label}"에 대해, 사용자는 ${value ? '예' : '아니오'}라고 답했습니다.`;
-      })
-      .join(' ');
-  }, [answers]);
-
   if (isLoading) {
     return (
       <Card className="w-full max-w-xl text-center">
         <CardHeader>
           <CardTitle className="font-headline text-4xl">오일 찾는 중...</CardTitle>
-          <CardDescription className="text-lg">AI가 당신의 기분을 분석하여 완벽한 오일을 찾고 있습니다.</CardDescription>
+          <CardDescription className="text-lg">당신의 기분을 분석하여 완벽한 오일을 찾고 있습니다.</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col items-center justify-center space-y-6 py-16">
           <Loader2 className="h-20 w-20 animate-spin text-primary" />
@@ -143,13 +133,13 @@ const QuizClient = () => {
         <CardContent className="flex flex-col items-center space-y-6">
           <Image
             src={`https://placehold.co/400x300/E8F5E9/333333`}
-            data-ai-hint={`${recommendation.oilName} bottle`}
-            alt={recommendation.oilName}
+            data-ai-hint={`${recommendation.name} bottle`}
+            alt={recommendation.name}
             width={400}
             height={300}
             className="rounded-lg object-cover"
           />
-          <h3 className="font-headline text-5xl text-primary">{recommendation.oilName}</h3>
+          <h3 className="font-headline text-5xl text-primary">{recommendation.name}</h3>
           <p className="text-xl text-muted-foreground">{recommendation.description}</p>
         </CardContent>
         <CardFooter className="grid grid-cols-1 gap-4 p-6 sm:grid-cols-2">
@@ -158,9 +148,7 @@ const QuizClient = () => {
             variant="outline"
             onClick={() =>
               router.push(
-                `/oils/${encodeURIComponent(recommendation.oilName)}?answers=${encodeURIComponent(
-                  answersString
-                )}&purchaseLink=${encodeURIComponent(recommendation.purchaseLink)}`
+                `/oils/${encodeURIComponent(recommendation.id)}`
               )
             }
           >

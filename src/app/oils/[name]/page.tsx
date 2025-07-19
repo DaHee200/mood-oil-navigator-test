@@ -1,27 +1,23 @@
-import { Suspense } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { generateOilDescription } from '@/ai/flows/generate-oil-description';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { ChevronLeft, Droplet, ShoppingBag, Sparkles } from 'lucide-react';
-
-async function OilDescription({ oilName, moodQuizAnswers }: { oilName: string; moodQuizAnswers: string }) {
-  const { description } = await generateOilDescription({ oilName, moodQuizAnswers });
-  return <p className="text-lg leading-relaxed">{description}</p>;
-}
+import { oilRecommendations, type Oil } from '@/lib/oils';
+import { notFound } from 'next/navigation';
 
 export default async function OilDetailsPage({
   params,
-  searchParams,
 }: {
   params: { name: string };
-  searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const oilName = decodeURIComponent(params.name);
-  const moodQuizAnswers = (searchParams.answers as string) || '기분 데이터가 제공되지 않았습니다.';
-  const purchaseLink = (searchParams.purchaseLink as string) || '#';
+  const oilId = decodeURIComponent(params.name);
+  const oil = oilRecommendations.find(o => o.id === oilId);
+
+  if (!oil) {
+    notFound();
+  }
 
   return (
     <main className="flex min-h-screen w-full flex-col items-center bg-background py-8 sm:py-12 md:py-16">
@@ -38,8 +34,8 @@ export default async function OilDetailsPage({
             <div className="relative h-64 md:h-full">
               <Image
                 src={`https://placehold.co/600x600/E8F5E9/333333`}
-                data-ai-hint={`${oilName} oil nature`}
-                alt={`${oilName} 에센셜 오일 병`}
+                data-ai-hint={`${oil.name} oil nature`}
+                alt={`${oil.name} 에센셜 오일 병`}
                 layout="fill"
                 objectFit="cover"
                 className="transition-transform duration-500 hover:scale-105"
@@ -48,7 +44,7 @@ export default async function OilDetailsPage({
             <div className="flex flex-col">
               <CardHeader className="pb-4">
                 <CardTitle className="font-headline text-5xl tracking-tight text-primary">
-                  {oilName}
+                  {oil.name}
                 </CardTitle>
                 <CardDescription className="text-xl">당신을 위한 맞춤 웰니스 솔루션</CardDescription>
               </CardHeader>
@@ -56,11 +52,9 @@ export default async function OilDetailsPage({
                 <div>
                   <h3 className="mb-3 flex items-center text-lg font-semibold">
                     <Sparkles className="mr-2 h-5 w-5 text-accent" />
-                    당신을 위한 맞춤 설명
+                    오일 설명
                   </h3>
-                  <Suspense fallback={<p>개인화된 설명을 불러오는 중...</p>}>
-                    <OilDescription oilName={oilName} moodQuizAnswers={moodQuizAnswers} />
-                  </Suspense>
+                   <p className="text-lg leading-relaxed">{oil.description}</p>
                 </div>
                 
                 <Separator />
@@ -79,7 +73,7 @@ export default async function OilDetailsPage({
                 </div>
                 
                 <Button asChild size="lg" className="w-full text-base font-bold">
-                  <a href={purchaseLink} target="_blank" rel="noopener noreferrer">
+                  <a href={oil.purchaseLink} target="_blank" rel="noopener noreferrer">
                     <ShoppingBag className="mr-2 h-5 w-5" /> 지금 구매하기
                   </a>
                 </Button>
