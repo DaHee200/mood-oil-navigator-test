@@ -3,11 +3,11 @@
 import { useState, type FC } from 'react';
 import { useRouter } from 'next/navigation';
 import {
+  HeartPulse,
   Smile,
-  Annoyed,
-  Battery,
-  Wind,
-  Zap,
+  Users,
+  Grape,
+  Clock,
   Loader2,
   ChevronLeft,
   Sparkles,
@@ -31,47 +31,47 @@ import Image from 'next/image';
 const quizQuestions = [
   {
     id: 'mood',
-    question: '지금 어떤 기분을 느끼고 싶으신가요?',
+    question: '지금 기분은 어떤가요?',
+    icon: HeartPulse,
+    options: {
+      yes: { text: '지치고 피곤함', tag: '피로' },
+      no: { text: '불안하고 긴장됨', tag: '불안' },
+    },
+  },
+  {
+    id: 'feeling',
+    question: '원하는 느낌은?',
     icon: Smile,
     options: {
-      yes: { text: '활기참', tag: '활력' },
-      no: { text: '차분함', tag: '안정' },
+      yes: { text: '활력', tag: '활력' },
+      no: { text: '안정감', tag: '안정' },
     },
   },
   {
-    id: 'stress',
-    question: '최근 스트레스를 많이 받았나요?',
-    icon: Annoyed,
+    id: 'personality',
+    question: '평소 성향은?',
+    icon: Users,
     options: {
-      yes: { text: '예', tag: '스트레스' },
-      no: { text: '아니오', tag: '평온' },
+      yes: { text: '외향적', tag: '활력' },
+      no: { text: '내향적', tag: '안정' },
     },
   },
   {
-    id: 'energy',
-    question: '주로 어느 시간대에 오일을 사용하고 싶으신가요?',
-    icon: Battery,
+    id: 'scent',
+    question: '원하는 향 계열은?',
+    icon: Grape,
     options: {
-      yes: { text: '아침/낮', tag: '에너지' },
-      no: { text: '저녁/밤', tag: '휴식' },
+      yes: { text: '상큼한 과일향', tag: '과일' },
+      no: { text: '부드러운 꽃향', tag: '꽃' },
     },
   },
   {
-    id: 'anxiety',
-    question: '마음의 평온이 필요한 순간이 있나요?',
-    icon: Wind,
+    id: 'time',
+    question: '오일을 사용할 시간대는?',
+    icon: Clock,
     options: {
-      yes: { text: '예', tag: '불안' },
-      no: { text: '아니오', tag: '집중' },
-    },
-  },
-  {
-    id: 'irritation',
-    question: '최근 쉽게 짜증이 났나요?',
-    icon: Zap,
-    options: {
-      yes: { text: '예', tag: '짜증' },
-      no: { text: '아니오', tag: '행복' },
+      yes: { text: '아침', tag: '아침' },
+      no: { text: '밤', tag: '밤' },
     },
   },
 ];
