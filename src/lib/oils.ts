@@ -5,7 +5,7 @@ export const oilRecommendations = [
     keywords: ["기분전환", "상쾌함", "행복감", "활력", "아침추천"],
     description: "오렌지는 상큼한 향기로 기분을 좋게 만들고, 행복감을 북돋아 줍니다.",
     purchaseLink: "https://www.doterra.com/KR/ko_KR/p/wild-orange-oil",
-    image: "/images/orange.jpg"
+    image: "https://placehold.co/400x400.png"
   },
   {
     id: "lavender",
