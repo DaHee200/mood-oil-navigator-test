@@ -25,9 +25,7 @@ export default function Home() {
           </Button>
         </CardContent>
       </Card>
-      <footer className="absolute bottom-6 text-center text-base text-muted-foreground">
-        <p>웰빙을 향한 당신의 여정이 여기서 시작됩니다.</p>
-      </footer>
+      
     </main>
   );
 }
