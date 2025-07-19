@@ -15,7 +15,7 @@ export default function Home() {
           <CardTitle className="font-headline text-5xl tracking-tight">
             Find your Oils
           </CardTitle>
-          <CardDescription className="pt-2 text-xl">
+          <CardDescription className="pt-2 text-xl mt-4 mb-6">
             당신의 오늘 분위기에 맞는 오일을 추천해드려요!
           </CardDescription>
         </CardHeader>
