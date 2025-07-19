@@ -24,7 +24,7 @@ export type GenerateOilDescriptionInput = z.infer<
 const GenerateOilDescriptionOutputSchema = z.object({
   description: z
     .string()
-    .describe('A short description of the oil based on the mood quiz answers.'),
+    .describe('A short description of the oil based on the mood quiz answers, in Korean.'),
 });
 export type GenerateOilDescriptionOutput = z.infer<
   typeof GenerateOilDescriptionOutputSchema
@@ -40,7 +40,7 @@ const prompt = ai.definePrompt({
   name: 'generateOilDescriptionPrompt',
   input: {schema: GenerateOilDescriptionInputSchema},
   output: {schema: GenerateOilDescriptionOutputSchema},
-  prompt: `Based on the user's mood quiz answers: "{{{moodQuizAnswers}}}", generate a short description of the benefits of {{oilName}}. The description should be personalized and relevant to the user's mood.`,
+  prompt: `사용자의 기분 퀴즈 답변: "{{{moodQuizAnswers}}}"을(를) 바탕으로, {{oilName}} 오일의 이점에 대한 짧은 설명을 한국어로 생성해주세요. 설명은 사용자의 기분과 관련이 있도록 개인화되어야 합니다.`,
 });
 
 const generateOilDescriptionFlow = ai.defineFlow(

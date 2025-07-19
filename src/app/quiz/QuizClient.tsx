@@ -10,7 +10,6 @@ import {
   Zap,
   Loader2,
   ChevronLeft,
-  ChevronRight,
   Sparkles,
   ShoppingBag,
 } from 'lucide-react';
@@ -24,7 +23,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { Slider } from '@/components/ui/slider';
 import { getOilRecommendation } from './actions';
 import { useToast } from '@/hooks/use-toast';
 import type { OilRecommendationOutput } from '@/ai/flows/recommend-oil';
@@ -33,34 +31,28 @@ import Image from 'next/image';
 const quizQuestions = [
   {
     id: 'happiness',
-    question: 'How happy do you feel right now?',
+    question: '지금 행복하다고 느끼시나요?',
     icon: Smile,
-    labels: ['Not at all', 'Extremely Happy'],
   },
   {
     id: 'stress',
-    question: 'How stressed have you been lately?',
+    question: '최근 스트레스를 많이 받았나요?',
     icon: Annoyed,
-    labels: ['Completely Calm', 'Very Stressed'],
   },
   {
     id: 'fatigue',
-    question: 'How would you rate your energy levels?',
+    question: '에너지가 넘친다고 느끼시나요?',
     icon: Battery,
-    labels: ['Drained', 'Full of Energy'],
-    reverse: true, // We will reverse the value for the `fatigue` input
   },
   {
     id: 'anxiety',
-    question: 'How much anxiety are you experiencing?',
+    question: '불안감을 느끼고 있나요?',
     icon: Wind,
-    labels: ['None', 'A Lot of Anxiety'],
   },
   {
     id: 'irritation',
-    question: 'How easily irritated have you been?',
+    question: '최근 쉽게 짜증이 났나요?',
     icon: Zap,
-    labels: ['Very Patient', 'Easily Irritated'],
   },
 ];
 
@@ -68,16 +60,22 @@ const QuizClient = () => {
   const router = useRouter();
   const { toast } = useToast();
   const [step, setStep] = useState(0);
-  const [answers, setAnswers] = useState<{ [key: string]: number }>({});
+  const [answers, setAnswers] = useState<{ [key: string]: boolean }>({});
   const [isLoading, setIsLoading] = useState(false);
   const [recommendation, setRecommendation] = useState<OilRecommendationOutput | null>(null);
   const [isFading, setIsFading] = useState(false);
 
   const currentQuestion = quizQuestions[step];
-  const progressValue = (step / quizQuestions.length) * 100;
+  const progressValue = ((step + 1) / quizQuestions.length) * 100;
 
-  const handleSliderChange = (value: number[]) => {
-    setAnswers((prev) => ({ ...prev, [currentQuestion.id]: value[0] }));
+  const handleAnswer = (value: boolean) => {
+    const nextAnswers = { ...answers, [currentQuestion.id]: value };
+    setAnswers(nextAnswers);
+    if (step < quizQuestions.length - 1) {
+      changeStep(step + 1);
+    } else {
+      handleSubmit(nextAnswers);
+    }
   };
 
   const changeStep = (nextStep: number) => {
@@ -88,27 +86,14 @@ const QuizClient = () => {
     }, 300);
   };
 
-  const handleNext = () => {
-    if (step < quizQuestions.length - 1) {
-      changeStep(step + 1);
-    }
-  };
-
   const handleBack = () => {
     if (step > 0) {
       changeStep(step - 1);
     }
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (finalAnswers: { [key: string]: boolean }) => {
     setIsLoading(true);
-    const finalAnswers = { ...answers };
-    const fatigueQuestion = quizQuestions.find((q) => q.id === 'fatigue');
-    if (fatigueQuestion?.reverse && finalAnswers.fatigue) {
-      // Reversing the value: 1 becomes 5, 5 becomes 1.
-      finalAnswers.fatigue = 6 - finalAnswers.fatigue;
-    }
-    
     const result = await getOilRecommendation(finalAnswers);
 
     if (result.success && result.data) {
@@ -116,7 +101,7 @@ const QuizClient = () => {
     } else {
       toast({
         variant: 'destructive',
-        title: 'Error',
+        title: '오류',
         description: result.error,
       });
     }
@@ -128,7 +113,7 @@ const QuizClient = () => {
       .map(([key, value]) => {
         const question = quizQuestions.find(q => q.id === key);
         const label = question ? question.question : key;
-        return `For "${label}", the user selected ${value} out of 5.`;
+        return `질문 "${label}"에 대해, 사용자는 ${value ? '예' : '아니오'}라고 답했습니다.`;
       })
       .join(' ');
   }, [answers]);
@@ -137,12 +122,12 @@ const QuizClient = () => {
     return (
       <Card className="w-full max-w-lg text-center">
         <CardHeader>
-          <CardTitle className="font-headline text-3xl">Finding Your Oil...</CardTitle>
-          <CardDescription>Our AI is analyzing your mood to find the perfect match.</CardDescription>
+          <CardTitle className="font-headline text-3xl">오일 찾는 중...</CardTitle>
+          <CardDescription>AI가 당신의 기분을 분석하여 완벽한 오일을 찾고 있습니다.</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col items-center justify-center space-y-4 py-12">
           <Loader2 className="h-16 w-16 animate-spin text-primary" />
-          <p className="text-muted-foreground">Please wait a moment.</p>
+          <p className="text-muted-foreground">잠시만 기다려주세요.</p>
         </CardContent>
       </Card>
     );
@@ -152,16 +137,16 @@ const QuizClient = () => {
     return (
       <Card className="w-full max-w-lg animate-fade-in text-center shadow-lg">
         <CardHeader>
-          <CardTitle className="font-headline text-3xl">Your Recommended Oil</CardTitle>
-          <CardDescription>Based on your answers, we suggest:</CardDescription>
+          <CardTitle className="font-headline text-3xl">추천 오일</CardTitle>
+          <CardDescription>답변을 바탕으로 다음 오일을 추천합니다:</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col items-center space-y-4">
-          <Image 
+          <Image
             src={`https://placehold.co/400x300/E8F5E9/333333`}
             data-ai-hint={`${recommendation.oilName} bottle`}
-            alt={recommendation.oilName} 
-            width={400} 
-            height={300} 
+            alt={recommendation.oilName}
+            width={400}
+            height={300}
             className="rounded-lg object-cover"
           />
           <h3 className="font-headline text-4xl text-primary">{recommendation.oilName}</h3>
@@ -178,11 +163,11 @@ const QuizClient = () => {
               )
             }
           >
-            <Sparkles className="mr-2 h-4 w-4" /> View Details
+            <Sparkles className="mr-2 h-4 w-4" /> 상세 정보 보기
           </Button>
           <Button asChild>
             <a href={recommendation.purchaseLink} target="_blank" rel="noopener noreferrer">
-              <ShoppingBag className="mr-2 h-4 w-4" /> Purchase Now
+              <ShoppingBag className="mr-2 h-4 w-4" /> 지금 구매하기
             </a>
           </Button>
         </CardFooter>
@@ -194,9 +179,9 @@ const QuizClient = () => {
     <Card className="w-full max-w-lg shadow-lg">
       <CardHeader>
         <Progress value={progressValue} className="mb-4 h-2" />
-        <CardTitle className="font-headline text-3xl">Your Mood Quiz</CardTitle>
+        <CardTitle className="font-headline text-3xl">기분 퀴즈</CardTitle>
         <CardDescription>
-          Question {step + 1} of {quizQuestions.length}
+          질문 {step + 1} / {quizQuestions.length}
         </CardDescription>
       </CardHeader>
       <CardContent className={`min-h-[220px] transition-opacity duration-300 ${isFading ? 'opacity-0' : 'opacity-100'}`}>
@@ -204,35 +189,21 @@ const QuizClient = () => {
           <div className="flex flex-col items-center space-y-6 text-center">
             <currentQuestion.icon className="h-12 w-12 text-primary" />
             <p className="text-xl font-medium">{currentQuestion.question}</p>
-            <div className="w-full px-2">
-              <Slider
-                value={[answers[currentQuestion.id] || 3]}
-                onValueChange={handleSliderChange}
-                min={1}
-                max={5}
-                step={1}
-              />
-              <div className="mt-2 flex justify-between text-sm text-muted-foreground">
-                <span>{currentQuestion.labels[0]}</span>
-                <span>{currentQuestion.labels[1]}</span>
-              </div>
+            <div className="flex w-full justify-center gap-4 pt-4">
+              <Button onClick={() => handleAnswer(true)} size="lg" className="w-32">
+                예
+              </Button>
+              <Button onClick={() => handleAnswer(false)} size="lg" variant="outline" className="w-32">
+                아니오
+              </Button>
             </div>
           </div>
         )}
       </CardContent>
-      <CardFooter className="flex justify-between">
+      <CardFooter className="flex justify-start">
         <Button variant="outline" onClick={handleBack} disabled={step === 0}>
-          <ChevronLeft className="mr-2 h-4 w-4" /> Back
+          <ChevronLeft className="mr-2 h-4 w-4" /> 뒤로
         </Button>
-        {step < quizQuestions.length - 1 ? (
-          <Button onClick={handleNext} disabled={answers[currentQuestion.id] === undefined}>
-            Next <ChevronRight className="ml-2 h-4 w-4" />
-          </Button>
-        ) : (
-          <Button onClick={handleSubmit} disabled={answers[currentQuestion.id] === undefined}>
-            Get Recommendation
-          </Button>
-        )}
       </CardFooter>
     </Card>
   );

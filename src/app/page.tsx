@@ -13,23 +13,23 @@ export default function Home() {
             <Leaf className="h-8 w-8" />
           </div>
           <CardTitle className="font-headline text-4xl tracking-tight">
-            Mood Oil Navigator
+            기분따라 오일 찾기
           </CardTitle>
           <CardDescription className="pt-2 text-lg">
-            Discover the perfect essential oil to balance your mind and body.
+            마음과 몸의 균형을 위한 완벽한 에센셜 오일을 발견하세요.
           </CardDescription>
         </CardHeader>
         <CardContent className="p-6 pt-0">
           <p className="mb-6 text-muted-foreground">
-            Answer a few simple questions about your current mood, and we'll recommend an oil tailored just for you.
+            현재 기분에 대한 몇 가지 간단한 질문에 답해주시면, 당신만을 위한 맞춤 오일을 추천해 드립니다.
           </p>
           <Button asChild size="lg" className="w-full text-base font-bold">
-            <Link href="/quiz">Find Your Oil</Link>
+            <Link href="/quiz">내 오일 찾기</Link>
           </Button>
         </CardContent>
       </Card>
       <footer className="absolute bottom-4 text-center text-sm text-muted-foreground">
-        <p>Your journey to wellness starts here.</p>
+        <p>웰빙을 향한 당신의 여정이 여기서 시작됩니다.</p>
       </footer>
     </main>
   );

@@ -20,7 +20,7 @@ export default async function OilDetailsPage({
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const oilName = decodeURIComponent(params.name);
-  const moodQuizAnswers = (searchParams.answers as string) || 'No mood data provided.';
+  const moodQuizAnswers = (searchParams.answers as string) || '기분 데이터가 제공되지 않았습니다.';
   const purchaseLink = (searchParams.purchaseLink as string) || '#';
 
   return (
@@ -29,7 +29,7 @@ export default async function OilDetailsPage({
         <Button asChild variant="ghost" className="mb-4">
           <Link href="/quiz">
             <ChevronLeft className="mr-2 h-4 w-4" />
-            Back to Quiz
+            퀴즈로 돌아가기
           </Link>
         </Button>
 
@@ -39,7 +39,7 @@ export default async function OilDetailsPage({
               <Image
                 src={`https://placehold.co/600x600/E8F5E9/333333`}
                 data-ai-hint={`${oilName} oil nature`}
-                alt={`A bottle of ${oilName} essential oil`}
+                alt={`${oilName} 에센셜 오일 병`}
                 layout="fill"
                 objectFit="cover"
                 className="transition-transform duration-500 hover:scale-105"
@@ -50,15 +50,15 @@ export default async function OilDetailsPage({
                 <CardTitle className="font-headline text-5xl tracking-tight text-primary">
                   {oilName}
                 </CardTitle>
-                <CardDescription className="text-xl">Your Personalized Wellness Ally</CardDescription>
+                <CardDescription className="text-xl">당신을 위한 맞춤 웰니스 솔루션</CardDescription>
               </CardHeader>
               <CardContent className="flex flex-grow flex-col justify-between space-y-6 p-6 pt-0">
                 <div>
                   <h3 className="mb-3 flex items-center text-lg font-semibold">
                     <Sparkles className="mr-2 h-5 w-5 text-accent" />
-                    Tailored For You
+                    당신을 위한 맞춤 설명
                   </h3>
-                  <Suspense fallback={<p>Loading personalized description...</p>}>
+                  <Suspense fallback={<p>개인화된 설명을 불러오는 중...</p>}>
                     <OilDescription oilName={oilName} moodQuizAnswers={moodQuizAnswers} />
                   </Suspense>
                 </div>
@@ -68,19 +68,19 @@ export default async function OilDetailsPage({
                 <div>
                   <h3 className="mb-3 flex items-center text-lg font-semibold">
                     <Droplet className="mr-2 h-5 w-5 text-accent" />
-                    Potential Uses
+                    활용법
                   </h3>
                   <ul className="list-disc space-y-1 pl-5 text-muted-foreground">
-                    <li>Add a few drops to a diffuser to scent your space.</li>
-                    <li>Mix with a carrier oil for a relaxing massage.</li>
-                    <li>Add to a warm bath to soothe muscles and mind.</li>
-                    <li>Inhale directly from the bottle for a quick boost.</li>
+                    <li>디퓨저에 몇 방울 떨어뜨려 공간을 향기롭게 만드세요.</li>
+                    <li>캐리어 오일과 섞어 편안한 마사지를 즐기세요.</li>
+                    <li>따뜻한 목욕물에 넣어 근육과 마음을 진정시키세요.</li>
+                    <li>병에서 직접 흡입하여 즉각적인 기분 전환을 경험하세요.</li>
                   </ul>
                 </div>
                 
                 <Button asChild size="lg" className="w-full text-base font-bold">
                   <a href={purchaseLink} target="_blank" rel="noopener noreferrer">
-                    <ShoppingBag className="mr-2 h-5 w-5" /> Purchase Now
+                    <ShoppingBag className="mr-2 h-5 w-5" /> 지금 구매하기
                   </a>
                 </Button>
               </CardContent>
