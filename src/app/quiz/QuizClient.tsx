@@ -132,8 +132,7 @@ const QuizClient = () => {
         </CardHeader>
         <CardContent className="flex flex-col items-center space-y-6">
           <Image
-            src={`https://placehold.co/400x300.png`}
-            data-ai-hint={`${recommendation.name} oil`}
+            src={recommendation.image}
             alt={recommendation.name}
             width={400}
             height={300}
