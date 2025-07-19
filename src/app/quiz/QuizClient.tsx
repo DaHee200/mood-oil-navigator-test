@@ -120,14 +120,14 @@ const QuizClient = () => {
 
   if (isLoading) {
     return (
-      <Card className="w-full max-w-lg text-center">
+      <Card className="w-full max-w-xl text-center">
         <CardHeader>
-          <CardTitle className="font-headline text-3xl">오일 찾는 중...</CardTitle>
-          <CardDescription>AI가 당신의 기분을 분석하여 완벽한 오일을 찾고 있습니다.</CardDescription>
+          <CardTitle className="font-headline text-4xl">오일 찾는 중...</CardTitle>
+          <CardDescription className="text-lg">AI가 당신의 기분을 분석하여 완벽한 오일을 찾고 있습니다.</CardDescription>
         </CardHeader>
-        <CardContent className="flex flex-col items-center justify-center space-y-4 py-12">
-          <Loader2 className="h-16 w-16 animate-spin text-primary" />
-          <p className="text-muted-foreground">잠시만 기다려주세요.</p>
+        <CardContent className="flex flex-col items-center justify-center space-y-6 py-16">
+          <Loader2 className="h-20 w-20 animate-spin text-primary" />
+          <p className="text-lg text-muted-foreground">잠시만 기다려주세요.</p>
         </CardContent>
       </Card>
     );
@@ -135,12 +135,12 @@ const QuizClient = () => {
 
   if (recommendation) {
     return (
-      <Card className="w-full max-w-lg animate-fade-in text-center shadow-lg">
+      <Card className="w-full max-w-xl animate-fade-in text-center shadow-lg">
         <CardHeader>
-          <CardTitle className="font-headline text-3xl">추천 오일</CardTitle>
-          <CardDescription>답변을 바탕으로 다음 오일을 추천합니다:</CardDescription>
+          <CardTitle className="font-headline text-4xl">추천 오일</CardTitle>
+          <CardDescription className="text-lg">답변을 바탕으로 다음 오일을 추천합니다:</CardDescription>
         </CardHeader>
-        <CardContent className="flex flex-col items-center space-y-4">
+        <CardContent className="flex flex-col items-center space-y-6">
           <Image
             src={`https://placehold.co/400x300/E8F5E9/333333`}
             data-ai-hint={`${recommendation.oilName} bottle`}
@@ -149,11 +149,12 @@ const QuizClient = () => {
             height={300}
             className="rounded-lg object-cover"
           />
-          <h3 className="font-headline text-4xl text-primary">{recommendation.oilName}</h3>
-          <p className="text-lg text-muted-foreground">{recommendation.description}</p>
+          <h3 className="font-headline text-5xl text-primary">{recommendation.oilName}</h3>
+          <p className="text-xl text-muted-foreground">{recommendation.description}</p>
         </CardContent>
-        <CardFooter className="grid grid-cols-1 gap-3 p-6 sm:grid-cols-2">
+        <CardFooter className="grid grid-cols-1 gap-4 p-6 sm:grid-cols-2">
            <Button
+            size="lg"
             variant="outline"
             onClick={() =>
               router.push(
@@ -163,11 +164,11 @@ const QuizClient = () => {
               )
             }
           >
-            <Sparkles className="mr-2 h-4 w-4" /> 상세 정보 보기
+            <Sparkles className="mr-2 h-5 w-5" /> 상세 정보 보기
           </Button>
-          <Button asChild>
+          <Button asChild size="lg">
             <a href={recommendation.purchaseLink} target="_blank" rel="noopener noreferrer">
-              <ShoppingBag className="mr-2 h-4 w-4" /> 지금 구매하기
+              <ShoppingBag className="mr-2 h-5 w-5" /> 지금 구매하기
             </a>
           </Button>
         </CardFooter>
@@ -176,24 +177,24 @@ const QuizClient = () => {
   }
 
   return (
-    <Card className="w-full max-w-lg shadow-lg">
+    <Card className="w-full max-w-xl shadow-lg">
       <CardHeader>
-        <Progress value={progressValue} className="mb-4 h-2" />
-        <CardTitle className="font-headline text-3xl">기분 퀴즈</CardTitle>
-        <CardDescription>
+        <Progress value={progressValue} className="mb-6 h-2" />
+        <CardTitle className="font-headline text-4xl">기분 퀴즈</CardTitle>
+        <CardDescription className="text-lg">
           질문 {step + 1} / {quizQuestions.length}
         </CardDescription>
       </CardHeader>
-      <CardContent className={`min-h-[220px] transition-opacity duration-300 ${isFading ? 'opacity-0' : 'opacity-100'}`}>
+      <CardContent className={`min-h-[250px] transition-opacity duration-300 ${isFading ? 'opacity-0' : 'opacity-100'}`}>
         {currentQuestion && (
-          <div className="flex flex-col items-center space-y-6 text-center">
-            <currentQuestion.icon className="h-12 w-12 text-primary" />
-            <p className="text-xl font-medium">{currentQuestion.question}</p>
-            <div className="flex w-full justify-center gap-4 pt-4">
-              <Button onClick={() => handleAnswer(true)} size="lg" className="w-32">
+          <div className="flex flex-col items-center space-y-8 text-center">
+            <currentQuestion.icon className="h-16 w-16 text-primary" />
+            <p className="text-2xl font-medium">{currentQuestion.question}</p>
+            <div className="flex w-full justify-center gap-6 pt-6">
+              <Button onClick={() => handleAnswer(true)} size="lg" className="w-40 py-6 text-lg">
                 예
               </Button>
-              <Button onClick={() => handleAnswer(false)} size="lg" variant="outline" className="w-32">
+              <Button onClick={() => handleAnswer(false)} size="lg" variant="outline" className="w-40 py-6 text-lg">
                 아니오
               </Button>
             </div>

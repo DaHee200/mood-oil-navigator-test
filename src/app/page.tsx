@@ -7,28 +7,28 @@ export default function Home() {
   return (
     <main className="flex min-h-screen w-full flex-col items-center justify-center p-4 sm:p-6 md:p-8">
       <div className="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(to_bottom,white_5%,transparent_90%)]"></div>
-      <Card className="relative z-10 w-full max-w-md animate-fade-in overflow-hidden text-center shadow-xl">
+      <Card className="relative z-10 w-full max-w-xl animate-fade-in overflow-hidden text-center shadow-xl">
         <CardHeader className="pb-4">
-          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
-            <Leaf className="h-8 w-8" />
+          <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 text-primary">
+            <Leaf className="h-10 w-10" />
           </div>
-          <CardTitle className="font-headline text-4xl tracking-tight">
+          <CardTitle className="font-headline text-5xl tracking-tight">
             기분따라 오일 찾기
           </CardTitle>
-          <CardDescription className="pt-2 text-lg">
+          <CardDescription className="pt-2 text-xl">
             마음과 몸의 균형을 위한 완벽한 에센셜 오일을 발견하세요.
           </CardDescription>
         </CardHeader>
         <CardContent className="p-6 pt-0">
-          <p className="mb-6 text-muted-foreground">
+          <p className="mb-8 text-lg text-muted-foreground">
             현재 기분에 대한 몇 가지 간단한 질문에 답해주시면, 당신만을 위한 맞춤 오일을 추천해 드립니다.
           </p>
-          <Button asChild size="lg" className="w-full text-base font-bold">
+          <Button asChild size="lg" className="w-full py-7 text-xl font-bold">
             <Link href="/quiz">내 오일 찾기</Link>
           </Button>
         </CardContent>
       </Card>
-      <footer className="absolute bottom-4 text-center text-sm text-muted-foreground">
+      <footer className="absolute bottom-6 text-center text-base text-muted-foreground">
         <p>웰빙을 향한 당신의 여정이 여기서 시작됩니다.</p>
       </footer>
     </main>
