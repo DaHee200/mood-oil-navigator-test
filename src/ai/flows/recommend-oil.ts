@@ -15,7 +15,7 @@ const MoodQuizInputSchema = z.object({
   happiness: z.boolean().describe('Whether the user feels happy.').optional(),
   anxiety: z.boolean().describe('Whether the user feels anxious.').optional(),
   depression: z.boolean().describe('Whether the user feels depressed.').optional(),
-  fatigue: z.boolean().describe('Whether the user feels energetic (true) or fatigued (false).').optional(),
+  fatigue: z.boolean().describe('Whether the user feels fatigued (true) or energetic (false).').optional(),
   irritation: z.boolean().describe('Whether the user feels irritated.').optional(),
   stress: z.boolean().describe('Whether the user feels stressed.').optional(),
 });
@@ -50,11 +50,11 @@ Consider the user's answers:
 - 행복함 (happiness): {{{happiness}}}
 - 불안함 (anxiety): {{{anxiety}}}
 - 우울함 (depression): {{{depression}}}
-- 활기참 (fatigue - true means energetic, false means fatigued): {{{fatigue}}}
+- 피로함 (fatigue - true means fatigued, false means energetic): {{{fatigue}}}
 - 짜증남 (irritation): {{{irritation}}}
 - 스트레스 받음 (stress): {{{stress}}}
 
-Recommend one oil based on these mood indicators. For example, if stress is true, Lavender might be a good choice. If fatigue is false, Peppermint could be recommended. Return the oil name, a brief description of its benefits, and a link to purchase it (a placeholder link is fine). The oil name and description must be in Korean.`,
+Recommend one oil based on these mood indicators. For example, if stress is true, Lavender might be a good choice. If fatigue is true, Peppermint could be recommended. Return the oil name, a brief description of its benefits, and a link to purchase it (a placeholder link is fine). The oil name and description must be in Korean.`,
 });
 
 const recommendOilFlow = ai.defineFlow(

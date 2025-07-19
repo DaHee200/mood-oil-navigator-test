@@ -41,7 +41,7 @@ const quizQuestions = [
   },
   {
     id: 'fatigue',
-    question: '에너지가 넘친다고 느끼시나요?',
+    question: '최근 피로감을 느끼시나요?',
     icon: Battery,
   },
   {
