@@ -5,16 +5,16 @@ import { useRouter } from 'next/navigation';
 import {
   HeartPulse,
   Smile,
-  Users,
-  Grape,
+  Leaf,
   Clock,
   Loader2,
   ChevronLeft,
   Sparkles,
   ShoppingBag,
-  TreePine,
-  BrainCircuit,
   Wind,
+  Brain,
+  Bed,
+  CloudDrizzle,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -33,31 +33,56 @@ import Image from 'next/image';
 
 const quizQuestions = [
   {
-    id: 'mood',
-    question: '지금 가장 필요한 것은 무엇인가요?',
+    id: 'state',
+    question: '지금 당신의 상태는 어떤가요?',
     icon: HeartPulse,
-    options: {
-      yes: { text: '피로를 풀고 집중하고 싶어요', tags: ['피로회복', '집중력'] }, // 페퍼민트
-      no: { text: '불안한 마음을 진정시키고 싶어요', tags: ['불안완화', '감정진정'] }, // 라벤더
-    },
-  },
-  {
-    id: 'feeling',
-    question: '어떤 느낌을 원하시나요?',
-    icon: Smile,
-    options: {
-      yes: { text: '짜증과 스트레스를 해소하고 싶어요', tags: ['짜증완화', '스트레스완화'] }, // 베르가못
-      no: { text: '우울한 기분을 떨치고 행복감을 느끼고 싶어요', tags: ['우울완화', '행복감'] }, // 일랑일랑
-    },
+    options: [
+      { text: '짜증나요', tags: ['mood change'] },
+      { text: '슬퍼요', tags: ['emotional calming'] },
+      { text: '피곤해요', tags: ['mood change'] },
+      { text: '긴장돼요', tags: ['tension relief'] },
+      { text: '화나요', tags: ['stress relief'] },
+      { text: '잠이 안와요', tags: ['insomnia relief'] },
+      { text: '머리가 아파요', tags: ['headache relief'] },
+      { text: '딱히 없어요', tags: ['mood change'] },
+    ],
   },
   {
     id: 'scent',
-    question: '어떤 향과 활동을 선호하시나요?',
+    question: '선호하는 향은 무엇인가요?',
     icon: Wind,
-    options: {
-      yes: { text: '명상하며 마음을 안정시키고 싶어요', tags: ['명상', '마음안정'] }, // 프랑킨센스
-      no: { text: '상큼한 향과 함께 저녁 시간을 보내고 싶어요', tags: ['상큼한향', '밤추천'] }, // 오렌지
-    },
+    options: [
+      { text: '과일향', tags: ['citrus'] },
+      { text: '꽃향', tags: ['floral'] },
+      { text: '나무향', tags: ['woody'] },
+      { text: '풀향', tags: ['herbal'] },
+    ],
+  },
+  {
+    id: 'problem',
+    question: '가장 해결하고 싶은 문제는 무엇인가요?',
+    icon: Brain,
+    options: [
+      { text: '불면증', tags: ['insomnia relief', 'night'] },
+      { text: '두통', tags: ['headache relief', 'morning'] },
+      { text: '스트레스', tags: ['stress relief', 'evening'] },
+      { text: '감정 기복', tags: ['emotional calming', 'day'] },
+      { text: '피로', tags: ['mood change', 'all day'] },
+      { text: '우울감', tags: ['emotional calming', 'day'] },
+      { text: '근육통', tags: ['tension relief', 'evening'] },
+    ],
+  },
+  {
+    id: 'time',
+    question: '주로 언제 사용하고 싶으신가요?',
+    icon: Clock,
+    options: [
+      { text: '아침', tags: ['morning'] },
+      { text: '낮', tags: ['day'] },
+      { text: '저녁', tags: ['evening'] },
+      { text: '밤', tags: ['night'] },
+      { text: '하루 종일', tags: ['all day'] },
+    ],
   },
 ];
 
@@ -94,8 +119,8 @@ const QuizClient: FC = () => {
 
   const handleBack = () => {
     if (step > 0) {
-      // For simplicity, we just go back a step. A more complex implementation
-      // might remove the last set of tags from `answers`.
+      // A more robust implementation might remove the previous answer's tags.
+      // For simplicity, we just go back.
       changeStep(step - 1);
     }
   };
@@ -178,7 +203,7 @@ const QuizClient: FC = () => {
   }
 
   return (
-    <Card className="w-full max-w-xl shadow-lg">
+    <Card className="w-full max-w-2xl shadow-lg">
       <CardHeader>
         <Progress value={progressValue} className="mb-6 h-2" />
         <CardTitle className="font-headline text-4xl">기분 퀴즈</CardTitle>
@@ -186,18 +211,23 @@ const QuizClient: FC = () => {
           질문 {step + 1} / {quizQuestions.length}
         </CardDescription>
       </CardHeader>
-      <CardContent className={`min-h-[250px] transition-opacity duration-300 ${isFading ? 'opacity-0' : 'opacity-100'}`}>
+      <CardContent className={`min-h-[350px] transition-opacity duration-300 ${isFading ? 'opacity-0' : 'opacity-100'}`}>
         {currentQuestion && (
-          <div className="flex flex-col items-center space-y-8 text-center">
+          <div className="flex flex-col items-center space-y-6 text-center">
             <currentQuestion.icon className="h-16 w-16 text-primary" />
             <p className="text-2xl font-medium">{currentQuestion.question}</p>
-            <div className="grid w-full grid-cols-1 justify-center gap-4 pt-6 md:grid-cols-2 md:gap-6">
-              <Button onClick={() => handleAnswer(currentQuestion.options.yes.tags)} size="lg" className="w-full h-auto px-6 py-4 text-lg whitespace-normal">
-                {currentQuestion.options.yes.text}
-              </Button>
-              <Button onClick={() => handleAnswer(currentQuestion.options.no.tags)} size="lg" variant="outline" className="w-full h-auto px-6 py-4 text-lg whitespace-normal">
-                {currentQuestion.options.no.text}
-              </Button>
+            <div className="grid w-full grid-cols-2 sm:grid-cols-3 md:grid-cols-4 justify-center gap-3 pt-4">
+              {currentQuestion.options.map((option) => (
+                <Button 
+                  key={option.text}
+                  onClick={() => handleAnswer(option.tags)} 
+                  size="lg" 
+                  variant="outline"
+                  className="w-full h-auto px-4 py-3 text-base whitespace-normal"
+                >
+                  {option.text}
+                </Button>
+              ))}
             </div>
           </div>
         )}
