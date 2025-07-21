@@ -8,40 +8,37 @@ interface ActionResult {
   error?: string;
 }
 
-// Helper function to find an oil by its ID
 const findOil = (id: string) => oilRecommendations.find(o => o.id === id);
 
 export async function getOilRecommendation(userKeywords: string[]): Promise<ActionResult> {
   try {
     const keywords = new Set(userKeywords);
 
-    // Direct matching rules for each oil
-    if (keywords.has('headache relief') && keywords.has('herbal') && keywords.has('morning')) {
+    if (keywords.has('두통완화') && keywords.has('허브향') && keywords.has('아침추천')) {
       const oil = findOil('peppermint');
       if (oil) return { success: true, data: oil };
     }
-    if (keywords.has('stress relief') && keywords.has('woody') && keywords.has('evening')) {
+    if (keywords.has('스트레스완화') && keywords.has('나무향') && keywords.has('저녁추천')) {
       const oil = findOil('frankincense');
       if (oil) return { success: true, data: oil };
     }
-    if (keywords.has('tension relief') && keywords.has('floral') && keywords.has('evening')) {
+    if (keywords.has('긴장완화') && keywords.has('꽃향') && keywords.has('저녁추천')) {
       const oil = findOil('ylang-ylang');
       if (oil) return { success: true, data: oil };
     }
-     if (keywords.has('emotional calming') && keywords.has('citrus') && keywords.has('day')) {
+    if (keywords.has('감정진정') && keywords.has('시트러스향') && keywords.has('낮추천')) {
       const oil = findOil('bergamot');
       if (oil) return { success: true, data: oil };
     }
-    if (keywords.has('mood change') && keywords.has('citrus') && keywords.has('all day')) {
+    if (keywords.has('기분변화') && keywords.has('시트러스향') && keywords.has('하루종일')) {
         const oil = findOil('orange');
         if (oil) return { success: true, data: oil };
     }
-    if (keywords.has('insomnia relief') && keywords.has('floral') && keywords.has('night')) {
+    if (keywords.has('불면완화') && keywords.has('꽃향') && keywords.has('밤추천')) {
         const oil = findOil('lavender');
         if (oil) return { success: true, data: oil };
     }
 
-    // Fallback to score-based matching if no direct match is found
     let bestMatch: Oil | null = null;
     let maxScore = -1;
 
@@ -59,7 +56,6 @@ export async function getOilRecommendation(userKeywords: string[]): Promise<Acti
     }
 
     if (!bestMatch) {
-        // Fallback to a default oil if no match is found at all
         bestMatch = findOil('lavender') || oilRecommendations[0];
     }
     

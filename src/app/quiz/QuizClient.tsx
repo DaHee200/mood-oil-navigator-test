@@ -33,14 +33,14 @@ const quizQuestions = [
     question: '나의 지금 상태는?',
     icon: HeartPulse,
     options: [
-      { text: '짜증', tags: ['mood change'] },
-      { text: '슬픔', tags: ['emotional calming'] },
-      { text: '피곤', tags: ['mood change'] },
-      { text: '긴장', tags: ['tension relief'] },
-      { text: '분노', tags: ['stress relief'] },
-      { text: '불면', tags: ['insomnia relief'] },
-      { text: '두통', tags: ['headache relief'] },
-      { text: '없음', tags: ['mood change'] },
+      { text: '짜증', tags: ['기분변화'] },
+      { text: '슬픔', tags: ['감정진정'] },
+      { text: '피곤', tags: ['피로회복'] },
+      { text: '긴장', tags: ['긴장완화'] },
+      { text: '분노', tags: ['스트레스완화'] },
+      { text: '불면', tags: ['불면완화'] },
+      { text: '두통', tags: ['두통완화'] },
+      { text: '상관없음', tags: ['기분변화'] },
     ],
   },
   {
@@ -48,10 +48,10 @@ const quizQuestions = [
     question: '선호하는 향기는?',
     icon: Wind,
     options: [
-      { text: '과일향', tags: ['citrus'] },
-      { text: '꽃향', tags: ['floral'] },
-      { text: '나무향', tags: ['woody'] },
-      { text: '허브향', tags: ['herbal'] },
+      { text: '과일향', tags: ['시트러스향'] },
+      { text: '꽃향', tags: ['꽃향'] },
+      { text: '나무향', tags: ['나무향'] },
+      { text: '허브향', tags: ['허브향'] },
     ],
   },
   {
@@ -59,13 +59,13 @@ const quizQuestions = [
     question: '가장 해결하고 싶은 문제는?',
     icon: Brain,
     options: [
-      { text: '불면증', tags: ['insomnia relief', 'night'] },
-      { text: '두통', tags: ['headache relief', 'morning'] },
-      { text: '스트레스', tags: ['stress relief', 'evening'] },
-      { text: '감정진정', tags: ['emotional calming', 'day'] },
-      { text: '피곤함', tags: ['mood change', 'all day'] },
-      { text: '우울증', tags: ['emotional calming', 'day'] },
-      { text: '근육통', tags: ['tension relief', 'evening'] },
+      { text: '불면증', tags: ['불면완화', '밤추천'] },
+      { text: '두통', tags: ['두통완화', '아침추천'] },
+      { text: '스트레스', tags: ['스트레스완화', '저녁추천'] },
+      { text: '감정진정', tags: ['감정진정', '낮추천'] },
+      { text: '피곤함', tags: ['피로회복', '하루종일'] },
+      { text: '우울증', tags: ['감정진정', '낮추천'] },
+      { text: '근육통', tags: ['긴장완화', '저녁추천'] },
     ],
   },
   {
@@ -73,11 +73,11 @@ const quizQuestions = [
     question: '주로 사용할 시간대는?',
     icon: Clock,
     options: [
-      { text: '아침', tags: ['morning'] },
-      { text: '낮', tags: ['day'] },
-      { text: '저녁', tags: ['evening'] },
-      { text: '밤', tags: ['night'] },
-      { text: '하루종일', tags: ['all day'] },
+      { text: '아침', tags: ['아침추천'] },
+      { text: '낮', tags: ['낮추천'] },
+      { text: '저녁', tags: ['저녁추천'] },
+      { text: '밤', tags: ['밤추천'] },
+      { text: '하루종일', tags: ['하루종일'] },
     ],
   },
 ];
@@ -116,8 +116,6 @@ const QuizClient: FC = () => {
 
   const handleBack = () => {
     if (step > 0) {
-      // A more robust implementation might remove the previous answer's tags.
-      // For simplicity, we just go back.
       changeStep(step - 1);
     }
   };
