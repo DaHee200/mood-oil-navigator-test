@@ -10,10 +10,21 @@ interface ActionResult {
 
 export async function getOilRecommendation(userKeywords: string[]): Promise<ActionResult> {
   try {
+    // Direct match for Peppermint
+    if (userKeywords.includes('피로회복') && userKeywords.includes('집중력')) {
+      const peppermint = oilRecommendations.find(o => o.id === 'peppermint');
+      if (peppermint) {
+        return { success: true, data: peppermint };
+      }
+    }
+
     let bestMatch: Oil | null = null;
     let maxScore = -1;
 
     for (const oil of oilRecommendations) {
+      // Don't reconsider peppermint if it wasn't a direct match
+      if (oil.id === 'peppermint') continue;
+
       let currentScore = 0;
       for (const keyword of userKeywords) {
         if (oil.keywords.includes(keyword)) {
