@@ -4,8 +4,6 @@ import { useState, type FC } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   HeartPulse,
-  Smile,
-  Leaf,
   Clock,
   Loader2,
   ChevronLeft,
@@ -13,8 +11,6 @@ import {
   ShoppingBag,
   Wind,
   Brain,
-  Bed,
-  CloudDrizzle,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -37,14 +33,12 @@ const quizQuestions = [
     question: '지금 당신의 상태는 어떤가요?',
     icon: HeartPulse,
     options: [
-      { text: '짜증나요', tags: ['mood change'] },
-      { text: '슬퍼요', tags: ['emotional calming'] },
-      { text: '피곤해요', tags: ['mood change'] },
-      { text: '긴장돼요', tags: ['tension relief'] },
-      { text: '화나요', tags: ['stress relief'] },
-      { text: '잠이 안와요', tags: ['insomnia relief'] },
+      { text: '기분 전환이 필요해요', tags: ['mood change'] },
+      { text: '잠을 잘 못자요', tags: ['insomnia relief'] },
       { text: '머리가 아파요', tags: ['headache relief'] },
-      { text: '딱히 없어요', tags: ['mood change'] },
+      { text: '몸이 긴장되어 있어요', tags: ['tension relief'] },
+      { text: '감정이 차분해졌으면 해요', tags: ['emotional calming'] },
+      { text: '스트레스가 많아요', tags: ['stress relief'] },
     ],
   },
   {
@@ -52,24 +46,10 @@ const quizQuestions = [
     question: '선호하는 향은 무엇인가요?',
     icon: Wind,
     options: [
-      { text: '과일향', tags: ['citrus'] },
-      { text: '꽃향', tags: ['floral'] },
-      { text: '나무향', tags: ['woody'] },
-      { text: '풀향', tags: ['herbal'] },
-    ],
-  },
-  {
-    id: 'problem',
-    question: '가장 해결하고 싶은 문제는 무엇인가요?',
-    icon: Brain,
-    options: [
-      { text: '불면증', tags: ['insomnia relief', 'night'] },
-      { text: '두통', tags: ['headache relief', 'morning'] },
-      { text: '스트레스', tags: ['stress relief', 'evening'] },
-      { text: '감정 기복', tags: ['emotional calming', 'day'] },
-      { text: '피로', tags: ['mood change', 'all day'] },
-      { text: '우울감', tags: ['emotional calming', 'day'] },
-      { text: '근육통', tags: ['tension relief', 'evening'] },
+      { text: '상큼한 시트러스', tags: ['citrus'] },
+      { text: '우아한 꽃', tags: ['floral'] },
+      { text: '차분한 나무', tags: ['woody'] },
+      { text: '싱그러운 풀', tags: ['herbal'] },
     ],
   },
   {
@@ -77,7 +57,7 @@ const quizQuestions = [
     question: '주로 언제 사용하고 싶으신가요?',
     icon: Clock,
     options: [
-      { text: '아침', tags: ['morning'] },
+      { text: '오전', tags: ['morning'] },
       { text: '낮', tags: ['day'] },
       { text: '저녁', tags: ['evening'] },
       { text: '밤', tags: ['night'] },
@@ -216,7 +196,7 @@ const QuizClient: FC = () => {
           <div className="flex flex-col items-center space-y-6 text-center">
             <currentQuestion.icon className="h-16 w-16 text-primary" />
             <p className="text-2xl font-medium">{currentQuestion.question}</p>
-            <div className="grid w-full grid-cols-2 sm:grid-cols-3 md:grid-cols-4 justify-center gap-3 pt-4">
+            <div className="grid w-full grid-cols-2 justify-center gap-3 pt-4 sm:grid-cols-3">
               {currentQuestion.options.map((option) => (
                 <Button 
                   key={option.text}
