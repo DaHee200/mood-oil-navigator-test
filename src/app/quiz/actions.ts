@@ -32,7 +32,7 @@ export async function getOilRecommendation(userKeywords: string[]): Promise<Acti
       const oil = findOil('bergamot');
       if (oil) return { success: true, data: oil };
     }
-    if (keywords.has('기분전환') && keywords.has('아침추천')) {
+    if (keywords.has('상큼한향') && keywords.has('밤추천')) {
         const oil = findOil('orange');
         if (oil) return { success: true, data: oil };
     }

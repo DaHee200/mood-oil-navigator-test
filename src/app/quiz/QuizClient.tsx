@@ -55,7 +55,7 @@ const quizQuestions = [
     question: '선호하는 향 계열은?',
     icon: Wind,
     options: {
-      yes: { text: '상큼한 과일향', tags: ['기분전환', '행복감'] },
+      yes: { text: '상큼한 과일향', tags: ['상큼한향'] },
       no: { text: '깊고 차분한 나무/꽃향', tags: ['우울완화', '명상'] },
     },
   },
