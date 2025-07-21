@@ -34,47 +34,29 @@ import Image from 'next/image';
 const quizQuestions = [
   {
     id: 'mood',
-    question: '지금 기분은 어떤가요?',
+    question: '지금 가장 필요한 것은 무엇인가요?',
     icon: HeartPulse,
     options: {
-      yes: { text: '지치고 피곤함', tags: ['피로회복'] },
-      no: { text: '불안하고 긴장됨', tags: ['불안완화', '스트레스완화'] },
+      yes: { text: '피로를 풀고 집중하고 싶어요', tags: ['피로회복', '집중력'] }, // 페퍼민트
+      no: { text: '불안한 마음을 진정시키고 싶어요', tags: ['불안완화', '감정진정'] }, // 라벤더
     },
   },
   {
     id: 'feeling',
-    question: '원하는 느낌은?',
+    question: '어떤 느낌을 원하시나요?',
     icon: Smile,
     options: {
-      yes: { text: '활력', tags: ['기분전환'] },
-      no: { text: '안정감', tags: ['감정진정', '마음안정', '차분함'] },
+      yes: { text: '짜증과 스트레스를 해소하고 싶어요', tags: ['짜증완화', '스트레스완화'] }, // 베르가못
+      no: { text: '우울한 기분을 떨치고 행복감을 느끼고 싶어요', tags: ['우울완화', '행복감'] }, // 일랑일랑
     },
   },
   {
     id: 'scent',
-    question: '선호하는 향 계열은?',
+    question: '어떤 향과 활동을 선호하시나요?',
     icon: Wind,
     options: {
-      yes: { text: '상큼한 과일향', tags: ['상큼한향'] },
-      no: { text: '깊고 차분한 나무/꽃향', tags: ['우울완화', '명상'] },
-    },
-  },
-  {
-    id: 'problem',
-    question: '가장 해결하고 싶은 문제는?',
-    icon: BrainCircuit,
-    options: {
-      yes: { text: '두통/집중력 저하', tags: ['집중력'] },
-      no: { text: '짜증/스트레스', tags: ['짜증완화', '스트레스완화'] },
-    },
-  },
-  {
-    id: 'time',
-    question: '주로 사용할 시간대는?',
-    icon: Clock,
-    options: {
-      yes: { text: '아침/낮', tags: ['아침추천'] },
-      no: { text: '저녁/밤', tags: ['밤추천'] },
+      yes: { text: '명상하며 마음을 안정시키고 싶어요', tags: ['명상', '마음안정'] }, // 프랑킨센스
+      no: { text: '상큼한 향과 함께 저녁 시간을 보내고 싶어요', tags: ['상큼한향', '밤추천'] }, // 오렌지
     },
   },
 ];
@@ -209,11 +191,11 @@ const QuizClient: FC = () => {
           <div className="flex flex-col items-center space-y-8 text-center">
             <currentQuestion.icon className="h-16 w-16 text-primary" />
             <p className="text-2xl font-medium">{currentQuestion.question}</p>
-            <div className="flex w-full justify-center gap-6 pt-6">
-              <Button onClick={() => handleAnswer(currentQuestion.options.yes.tags)} size="lg" className="w-auto px-6 py-6 text-lg">
+            <div className="grid w-full grid-cols-1 justify-center gap-4 pt-6 md:grid-cols-2 md:gap-6">
+              <Button onClick={() => handleAnswer(currentQuestion.options.yes.tags)} size="lg" className="w-full h-auto px-6 py-4 text-lg whitespace-normal">
                 {currentQuestion.options.yes.text}
               </Button>
-              <Button onClick={() => handleAnswer(currentQuestion.options.no.tags)} size="lg" variant="outline" className="w-auto px-6 py-6 text-lg">
+              <Button onClick={() => handleAnswer(currentQuestion.options.no.tags)} size="lg" variant="outline" className="w-full h-auto px-6 py-4 text-lg whitespace-normal">
                 {currentQuestion.options.no.text}
               </Button>
             </div>
