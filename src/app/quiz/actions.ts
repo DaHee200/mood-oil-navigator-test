@@ -102,7 +102,7 @@ export async function getOilRecommendation(userKeywords: string[]): Promise<Acti
 # 규칙:
 1. 의학적 치료 효과를 단정하지 마세요. (예: "치료됩니다", "두통이 낫습니다", "우울증을 완치합니다" 대신 "완화에 도움이 될 수 있습니다", "도움을 줍니다", "가라앉히는 데 도움을 줍니다" 등 완곡하고 안전한 표현 사용)
 2. 따뜻하고 위로하는 말투(해요체, 공감형 어조, "~길 바라요", "~해 드릴게요")를 사용하세요.
-3. 사용자가 선호하는 향과 추천된 오일의 향이 다를 경우, '✨ 이 향을 추천한 이유' 섹션에서 "고객님은 [선호하는 향]을 선호하시지만, 지금의 [감정/신체 상태]를 더 잘 보듬어 드리기 위해 오늘은 특별히 [추천 오일의 향]을 품은 이 오일을 추천해 드려요"와 같이 다정하게 그 이유를 설명해 주세요. 만약 향이 같다면(선호 향이 '과일향'이고 레몬, 라임, 오렌지, 자몽, 베르가못, 만다린 등 과일 계열 오일이 추천된 경우 포함) 취향에 잘 맞는 향이라고 언급해 주세요.
+3. 사용자가 선호하는 향과 추천된 오일의 향이 다를 경우, '✨ 이 향을 추천한 이유' 섹션에서 "고객님은 [선호하는 향]을 선호하시지만, 지금의 [감정/신체 상태]를 더 잘 보듬어 드리기 위해 오늘은 특별히 [추천 오일의 향]을 품은 이 오일을 추천해 드려요"와 같이 다정하게 그 이유를 설명해 주세요. 만약 향이 같다면(선호 향이 '과일향'이고 레몬, 라임, 오렌지, 자몽, 베르가못, 만다린 등 과일 계열 오일이 추천된 경우 포함) 취향에 잘 맞는 향이라고 언급해 주세요. 단, 선호하는 향이 '없음'인 경우 향 취향에 대한 언급(예: '선호하는 향이 없으시지만', '향에 상관없이' 등)은 완전히 빼고, 오직 사용자의 감정/신체 상태 해결에 초점을 맞춰 이유를 설명해 주세요.
 4. 반드시 아래 출력 형식을 완벽히 지켜서 출력하세요. 추가적인 마크다운 서식이나 서론/결론은 생략하고 오직 형식에 지정된 내용만 반환해야 합니다.
 
 # 출력 형식:
@@ -145,12 +145,17 @@ ${bestMatch.name}
                             bestMatch.scent === '상큼한 향' ? '기분까지 깨우는 짜릿하고 상큼한 향이 무거운 몸과 마음을 가볍게 리프레시 해줍니다.' :
                             bestMatch.scent === '달달한 향' ? '마치 솜사탕처럼 부드럽고 달달한 향기가 지친 감정을 포근하게 감싸 안아줍니다.' :
                             '싱그럽고 자연스러운 허브향이 지친 마음에 상쾌한 휴식처가 되어 줍니다.';
-      
-      const scentPreferenceText = scentPreference || '좋은 향';
-      const isFruitFamily = scentPreference === '과일향' && ['lemon', 'lime', 'orange', 'grapefruit', 'bergamot', 'mandarin'].includes(bestMatch.id);
-      const reasonText = scentPreference && scentPreference !== bestMatch.scent && !isFruitFamily
-        ? `고객님은 ${scentPreferenceText}을(를) 선호하시지만, 선택하신 ${emotionText} 상태 및 ${physicalText} 고민을 더 잘 보듬어 드리기 위해 오늘은 특별히 ${bestMatch.scent}을 품은 ${bestMatch.name} 오일을 준비했습니다.`
-        : `선호하시는 ${scentPreferenceText} 취향에 꼭 맞추어, 선택하신 ${emotionText} 상태 및 ${physicalText} 고민에 도움을 드리고자 ${bestMatch.name} 오일을 준비했습니다.`;
+      let reasonText = '';
+      if (!scentPreference) {
+        reasonText = `선택하신 ${emotionText} 상태 및 ${physicalText} 고민을 다정하게 보듬어 드리기 위해 오늘은 특별히 ${bestMatch.name} 오일을 준비했습니다.`;
+      } else {
+        const isFruitFamily = scentPreference === '과일향' && ['lemon', 'lime', 'orange', 'grapefruit', 'bergamot', 'mandarin'].includes(bestMatch.id);
+        if (scentPreference !== bestMatch.scent && !isFruitFamily) {
+          reasonText = `고객님은 ${scentPreference}을(를) 선호하시지만, 선택하신 ${emotionText} 상태 및 ${physicalText} 고민을 더 잘 보듬어 드리기 위해 오늘은 특별히 ${bestMatch.scent}을 품은 ${bestMatch.name} 오일을 준비했습니다.`;
+        } else {
+          reasonText = `선호하시는 ${scentPreference} 취향에 꼭 맞추어, 선택하신 ${emotionText} 상태 및 ${physicalText} 고민에 도움을 드리고자 ${bestMatch.name} 오일을 준비했습니다.`;
+        }
+      }
       
       recommendationText = `
 오늘의 향기
