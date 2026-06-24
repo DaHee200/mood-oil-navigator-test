@@ -4,8 +4,8 @@ import { Toaster } from "@/components/ui/toaster"
 import { HomeButton } from '@/components/HomeButton';
 
 export const metadata: Metadata = {
-  title: '기분따라 오일 찾기',
-  description: '당신의 기분에 맞는 완벽한 에센셜 오일을 찾아보세요.',
+  title: 'mood-oil-navigator-test',
+  description: '당신에게 맞는 향을 찾아드립니다.',
 };
 
 export default function RootLayout({
