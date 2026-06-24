@@ -1,6 +1,7 @@
 import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
+import { HomeButton } from '@/components/HomeButton';
 
 export const metadata: Metadata = {
   title: '기분따라 오일 찾기',
@@ -20,6 +21,7 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Alegreya:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet" />
       </head>
       <body className="font-body antialiased h-full">
+        <HomeButton />
         {children}
         <Toaster />
       </body>

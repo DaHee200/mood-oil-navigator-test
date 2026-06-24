@@ -10,9 +10,10 @@ import { notFound } from 'next/navigation';
 export default async function OilDetailsPage({
   params,
 }: {
-  params: { name: string };
+  params: Promise<{ name: string }>;
 }) {
-  const oilId = decodeURIComponent(params.name);
+  const { name } = await params;
+  const oilId = decodeURIComponent(name);
   const oil = oilRecommendations.find(o => o.id === oilId);
 
   if (!oil) {
