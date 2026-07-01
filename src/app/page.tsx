@@ -23,7 +23,10 @@ export default function Home() {
             <Link href="/quiz">시작하기</Link>
           </Button>
         </CardContent>
-        <CardFooter>
+        <CardFooter className="flex justify-center pb-8">
+          <p className="text-sm font-medium text-red-500">
+            * 5개월 미만의 임산부에게는 아로마 오일 사용을 매우 권장하지 않습니다.
+          </p>
         </CardFooter>
       </Card>
     </main>
