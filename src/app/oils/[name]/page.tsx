@@ -6,6 +6,7 @@ import { Separator } from '@/components/ui/separator';
 import { ChevronLeft, Droplet, ShoppingBag, Sparkles } from 'lucide-react';
 import { oilRecommendations, type Oil } from '@/lib/oils';
 import { notFound } from 'next/navigation';
+import { SimilarOils } from '@/components/SimilarOils';
 
 export default async function OilDetailsPage({
   params,
@@ -82,6 +83,8 @@ export default async function OilDetailsPage({
             </div>
           </div>
         </Card>
+
+        <SimilarOils currentOil={oil} />
       </div>
     </main>
   );

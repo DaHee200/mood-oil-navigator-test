@@ -191,3 +191,20 @@ export const oilRecommendations: Oil[] = [
     image: "/images/teatree.png"
   }
 ];
+
+export function getSimilarOils(targetOil: Oil, limit = 3): Oil[] {
+  return oilRecommendations
+    .filter((oil) => oil.id !== targetOil.id)
+    .map((oil) => {
+      const overlapCount = oil.recommendations.filter((rec) =>
+        targetOil.recommendations.includes(rec)
+      ).length;
+      const sameScentScore = oil.scent === targetOil.scent ? 1 : 0;
+      const score = overlapCount * 2 + sameScentScore;
+      return { oil, score };
+    })
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map((item) => item.oil);
+}
+

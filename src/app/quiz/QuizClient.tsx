@@ -27,6 +27,7 @@ import { getOilRecommendation, type RecommendationData } from './actions';
 import { useToast } from '@/hooks/use-toast';
 import type { Oil } from '@/lib/oils';
 import Image from 'next/image';
+import { SimilarOils } from '@/components/SimilarOils';
 
 const quizQuestions = [
   {
@@ -299,6 +300,8 @@ const QuizClient: FC = () => {
               "{sections.ending.replace(/^"|"$/g, '')}"
             </p>
           </div>
+
+          <SimilarOils currentOil={oil} />
         </CardContent>
         <CardFooter className="grid grid-cols-1 gap-3 p-6 sm:grid-cols-2 border-t border-border/50 bg-secondary/5">
            <Button
