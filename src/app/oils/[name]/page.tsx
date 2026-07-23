@@ -7,6 +7,7 @@ import { ChevronLeft, Droplet, ShoppingBag, Sparkles } from 'lucide-react';
 import { oilRecommendations, type Oil } from '@/lib/oils';
 import { notFound } from 'next/navigation';
 import { SimilarOils } from '@/components/SimilarOils';
+import { generateTraceId, logHttp, runWithMDC } from '@/lib/logger';
 
 export default async function OilDetailsPage({
   params,
@@ -15,11 +16,17 @@ export default async function OilDetailsPage({
 }) {
   const { name } = await params;
   const oilId = decodeURIComponent(name);
-  const oil = oilRecommendations.find(o => o.id === oilId);
+  const traceId = generateTraceId();
 
-  if (!oil) {
-    notFound();
-  }
+  return runWithMDC({ traceId, path: `/oils/${oilId}` }, async () => {
+    const oil = oilRecommendations.find(o => o.id === oilId);
+
+    if (!oil) {
+      logHttp(404, `Oil details not found for ID: ${oilId}`, { oilId });
+      notFound();
+    }
+
+    logHttp(200, `Viewed oil details for ID: ${oilId}`, { oilId });
 
   return (
     <main className="flex min-h-screen w-full flex-col items-center bg-background py-8 sm:py-12 md:py-16">
@@ -88,4 +95,5 @@ export default async function OilDetailsPage({
       </div>
     </main>
   );
+  });
 }

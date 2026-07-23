@@ -2,6 +2,7 @@
 
 import { oilRecommendations, type Oil } from '@/lib/oils';
 import { ai } from '@/ai/genkit';
+import { generateTraceId, logHttp, runWithMDC } from '@/lib/logger';
 
 export interface RecommendationData {
   oil: Oil;
@@ -12,80 +13,90 @@ interface ActionResult {
   success: boolean;
   data?: RecommendationData;
   error?: string;
+  traceId?: string;
 }
 
-export async function getOilRecommendation(userKeywords: string[]): Promise<ActionResult> {
-  try {
-    const emotions = userKeywords.filter(k => 
-      ['짜증', '슬픔', '긴장', '분노', '스트레스', '감정진정', '우울증'].includes(k)
-    );
-    const physicals = userKeywords.filter(k => 
-      ['피곤함', '불면', '불면증', '두통', '근육통', '뾰루지', '벌레물림', '식욕부진', '입냄새', '입덧'].includes(k)
-    );
-    const scents = userKeywords.filter(k => 
-      ['과일향', '꽃향', '나무향', '허브향', '시원함'].includes(k)
-    );
-    const scentPreference = scents[0] || '';
+export async function getOilRecommendation(
+  userKeywords: string[],
+  clientTraceId?: string
+): Promise<ActionResult> {
+  const traceId = clientTraceId || generateTraceId();
 
-    // Calculate match scores for all 11 oils
-    const scoredOils = [...oilRecommendations].map(oil => {
-      let emotionScore = 0;
-      for (const emotion of emotions) {
-        if (oil.recommendations.includes(emotion)) {
-          emotionScore++;
+  return runWithMDC({ traceId, path: '/quiz/actions/getOilRecommendation' }, async () => {
+    try {
+      // 400 BAD REQUEST validation
+      if (!userKeywords || !Array.isArray(userKeywords)) {
+        logHttp(400, 'Invalid userKeywords provided to getOilRecommendation', { userKeywords });
+        return {
+          success: false,
+          error: '잘못된 요청 파라미터입니다.',
+          traceId,
+        };
+      }
+
+      const emotions = userKeywords.filter(k => 
+        ['짜증', '슬픔', '긴장', '분노', '스트레스', '감정진정', '우울증'].includes(k)
+      );
+      const physicals = userKeywords.filter(k => 
+        ['피곤함', '불면', '불면증', '두통', '근육통', '뾰루지', '벌레물림', '식욕부진', '입냄새', '입덧'].includes(k)
+      );
+      const scents = userKeywords.filter(k => 
+        ['과일향', '꽃향', '나무향', '허브향', '시원함'].includes(k)
+      );
+      const scentPreference = scents[0] || '';
+
+      // Calculate match scores for all 11 oils
+      const scoredOils = [...oilRecommendations].map(oil => {
+        let emotionScore = 0;
+        for (const emotion of emotions) {
+          if (oil.recommendations.includes(emotion)) {
+            emotionScore++;
+          }
         }
-      }
 
-      let physicalScore = 0;
-      for (const physical of physicals) {
-        if (oil.recommendations.includes(physical)) {
-          physicalScore++;
-        } else if (physical === '불면' && oil.recommendations.includes('불면증')) {
-          physicalScore++;
-        } else if (physical === '불면증' && oil.recommendations.includes('불면')) {
-          physicalScore++;
+        let physicalScore = 0;
+        for (const physical of physicals) {
+          if (oil.recommendations.includes(physical)) {
+            physicalScore++;
+          } else if (physical === '불면' && oil.recommendations.includes('불면증')) {
+            physicalScore++;
+          } else if (physical === '불면증' && oil.recommendations.includes('불면')) {
+            physicalScore++;
+          }
         }
-      }
 
-      let scentScore = oil.scent === scentPreference ? 1 : 0;
-      if (scentPreference === '과일향' && ['lemon', 'lime', 'orange'].includes(oil.id)) {
-        scentScore = 1;
-      }
+        let scentScore = oil.scent === scentPreference ? 1 : 0;
+        if (scentPreference === '과일향' && ['lemon', 'lime', 'orange'].includes(oil.id)) {
+          scentScore = 1;
+        }
 
-      // Frequency score: '낮음' is 3 (highest priority), '중간' is 2, '높음' is 1
-      const frequencyScore = oil.frequency === '낮음' ? 3 : oil.frequency === '중간' ? 2 : 1;
+        const frequencyScore = oil.frequency === '낮음' ? 3 : oil.frequency === '중간' ? 2 : 1;
 
-      return {
-        oil,
-        emotionScore,
-        physicalScore,
-        scentScore,
-        frequencyScore
-      };
-    });
+        return {
+          oil,
+          emotionScore,
+          physicalScore,
+          scentScore,
+          frequencyScore
+        };
+      });
 
-    // Sort according to rules:
-    // 1. Emotion score descending (감정 상태를 가장 우선적으로 고려)
-    // 2. Physical score descending
-    // 3. Scent score descending (동일 점수일 경우 향 취향 우선 반영)
-    // 4. Frequency score descending (낮음 -> 중간 -> 높음 순으로 우선순위 부여)
-    scoredOils.sort((a, b) => {
-      if (b.emotionScore !== a.emotionScore) {
-        return b.emotionScore - a.emotionScore;
-      }
-      if (b.physicalScore !== a.physicalScore) {
-        return b.physicalScore - a.physicalScore;
-      }
-      if (b.scentScore !== a.scentScore) {
-        return b.scentScore - a.scentScore;
-      }
-      return b.frequencyScore - a.frequencyScore;
-    });
+      scoredOils.sort((a, b) => {
+        if (b.emotionScore !== a.emotionScore) {
+          return b.emotionScore - a.emotionScore;
+        }
+        if (b.physicalScore !== a.physicalScore) {
+          return b.physicalScore - a.physicalScore;
+        }
+        if (b.scentScore !== a.scentScore) {
+          return b.scentScore - a.scentScore;
+        }
+        return b.frequencyScore - a.frequencyScore;
+      });
 
-    const bestMatch = scoredOils[0].oil;
+      const bestMatch = scoredOils[0].oil;
 
-    // Generate comforting recommendation copy via Genkit
-    const prompt = `
+      const prompt = `
 당신은 아로마테라피 전문가이자 따뜻하고 위로를 건네는 카운셀러입니다.
 사용자가 선택한 오일과 그들의 상태를 기반으로 맞춤형 아로마테라피 추천 메시지를 작성해 주세요.
 
@@ -126,38 +137,46 @@ ${bestMatch.name}
 향은 문제를 해결해주지는 않지만, 오늘의 당신을 조금 더 다정하게 안아줄 수 있어요.
 `;
 
-    let recommendationText = '';
-    try {
-      const response = await ai.generate({
-        prompt,
-      });
-      recommendationText = response.text || '';
-    } catch (apiError) {
-      console.warn('Genkit API call failed, generating local fallback text:', apiError);
-      
-      const emotionText = emotions.length > 0 ? emotions.join(', ') : '오늘의 기분';
-      const physicalText = physicals.length > 0 ? physicals.join(', ') : '신체 고민';
-      
-      const scentFeelText = bestMatch.scent === '꽃향' ? '화사하고 부드러운 꽃향기가 마치 만개한 정원 한가운데 서 있는 듯한 포근함을 선사합니다.' :
-                            bestMatch.scent === '과일향' ? '갓 딴 과일처럼 상큼하고 달콤한 향이 기분을 단숨에 밝고 경쾌하게 끌어올려 줍니다.' :
-                            bestMatch.scent === '나무향' ? '비 온 뒤의 깊은 숲속처럼 차분하고 묵직한 나무향이 마음의 중심을 단단하게 잡아줍니다.' :
-                            bestMatch.scent === '시원함' ? '가슴속까지 탁 트이는 시원하고 청량한 향이 복잡한 머리를 맑게 비워줍니다.' :
-                            bestMatch.scent === '상큼한 향' ? '기분까지 깨우는 짜릿하고 상큼한 향이 무거운 몸과 마음을 가볍게 리프레시 해줍니다.' :
-                            bestMatch.scent === '달달한 향' ? '마치 솜사탕처럼 부드럽고 달달한 향기가 지친 감정을 포근하게 감싸 안아줍니다.' :
-                            '싱그럽고 자연스러운 허브향이 지친 마음에 상쾌한 휴식처가 되어 줍니다.';
-      let reasonText = '';
-      if (!scentPreference) {
-        reasonText = `선택하신 ${emotionText} 상태 및 ${physicalText} 고민을 다정하게 보듬어 드리기 위해 오늘은 특별히 ${bestMatch.name} 오일을 준비했습니다.`;
-      } else {
-        const isFruitFamily = scentPreference === '과일향' && ['lemon', 'lime', 'orange', 'grapefruit', 'bergamot', 'mandarin'].includes(bestMatch.id);
-        if (scentPreference !== bestMatch.scent && !isFruitFamily) {
-          reasonText = `고객님은 ${scentPreference}을(를) 선호하시지만, 선택하신 ${emotionText} 상태 및 ${physicalText} 고민을 더 잘 보듬어 드리기 위해 오늘은 특별히 ${bestMatch.scent}을 품은 ${bestMatch.name} 오일을 준비했습니다.`;
+      let recommendationText = '';
+      try {
+        const response = await ai.generate({
+          prompt,
+        });
+        recommendationText = response.text || '';
+        logHttp(200, `Successfully generated recommendation via Genkit AI for oil: ${bestMatch.name}`, {
+          oilId: bestMatch.id,
+          userKeywords,
+        });
+      } catch (apiError) {
+        // 300 FALLBACK WARN LOG
+        logHttp(300, 'Genkit AI API call failed, automatically executing fallback local recommendation generator', {
+          oilId: bestMatch.id,
+          userKeywords,
+        }, apiError);
+
+        const emotionText = emotions.length > 0 ? emotions.join(', ') : '오늘의 기분';
+        const physicalText = physicals.length > 0 ? physicals.join(', ') : '신체 고민';
+        
+        const scentFeelText = bestMatch.scent === '꽃향' ? '화사하고 부드러운 꽃향기가 마치 만개한 정원 한가운데 서 있는 듯한 포근함을 선사합니다.' :
+                              bestMatch.scent === '과일향' ? '갓 딴 과일처럼 상큼하고 달콤한 향이 기분을 단숨에 밝고 경쾌하게 끌어올려 줍니다.' :
+                              bestMatch.scent === '나무향' ? '비 온 뒤의 깊은 숲속처럼 차분하고 묵직한 나무향이 마음의 중심을 단단하게 잡아줍니다.' :
+                              bestMatch.scent === '시원함' ? '가슴속까지 탁 트이는 시원하고 청량한 향이 복잡한 머리를 맑게 비워줍니다.' :
+                              bestMatch.scent === '상큼한 향' ? '기분까지 깨우는 짜릿하고 상큼한 향이 무거운 몸과 마음을 가볍게 리프레시 해줍니다.' :
+                              bestMatch.scent === '달달한 향' ? '마치 솜사탕처럼 부드럽고 달달한 향기가 지친 감정을 포근하게 감싸 안아줍니다.' :
+                              '싱그럽고 자연스러운 허브향이 지친 마음에 상쾌한 휴식처가 되어 줍니다.';
+        let reasonText = '';
+        if (!scentPreference) {
+          reasonText = `선택하신 ${emotionText} 상태 및 ${physicalText} 고민을 다정하게 보듬어 드리기 위해 오늘은 특별히 ${bestMatch.name} 오일을 준비했습니다.`;
         } else {
-          reasonText = `선호하시는 ${scentPreference} 취향에 꼭 맞추어, 선택하신 ${emotionText} 상태 및 ${physicalText} 고민에 도움을 드리고자 ${bestMatch.name} 오일을 준비했습니다.`;
+          const isFruitFamily = scentPreference === '과일향' && ['lemon', 'lime', 'orange', 'grapefruit', 'bergamot', 'mandarin'].includes(bestMatch.id);
+          if (scentPreference !== bestMatch.scent && !isFruitFamily) {
+            reasonText = `고객님은 ${scentPreference}을(를) 선호하시지만, 선택하신 ${emotionText} 상태 및 ${physicalText} 고민을 더 잘 보듬어 드리기 위해 오늘은 특별히 ${bestMatch.scent}을 품은 ${bestMatch.name} 오일을 준비했습니다.`;
+          } else {
+            reasonText = `선호하시는 ${scentPreference} 취향에 꼭 맞추어, 선택하신 ${emotionText} 상태 및 ${physicalText} 고민에 도움을 드리고자 ${bestMatch.name} 오일을 준비했습니다.`;
+          }
         }
-      }
-      
-      recommendationText = `
+        
+        recommendationText = `
 오늘의 향기
 
 🌿 추천 오일
@@ -177,18 +196,25 @@ ${bestMatch.name}은(는) ${scentFeelText}
 
 향은 문제를 해결해주지는 않지만, 오늘의 당신을 조금 더 다정하게 안아줄 수 있어요.
 `;
-    }
-
-    return {
-      success: true,
-      data: {
-        oil: bestMatch,
-        recommendationText,
       }
-    };
 
-  } catch (error) {
-    console.error('Error getting oil recommendation:', error);
-    return { success: false, error: '추천을 받는 동안 오류가 발생했습니다. 나중에 다시 시도해주세요.' };
-  }
+      return {
+        success: true,
+        data: {
+          oil: bestMatch,
+          recommendationText,
+        },
+        traceId,
+      };
+
+    } catch (error) {
+      // 500 INTERNAL SERVER ERROR LOG
+      logHttp(500, 'Unhandled error in getOilRecommendation server action', { userKeywords }, error);
+      return {
+        success: false,
+        error: '추천을 받는 동안 오류가 발생했습니다. 나중에 다시 시도해주세요.',
+        traceId,
+      };
+    }
+  });
 }
